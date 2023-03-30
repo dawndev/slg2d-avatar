@@ -38,7 +38,7 @@ class PropertiesConfig {
 @ConfigurationProperties(prefix = "slg2d.server", ignoreInvalidFields = false)
 class ServerProperties {
     var clusterId: Long? = null
-    var address: String? = null
+    var host: String? = null
     var port: Int? = null
     var area: Int? = null
     var partition: Int? = null

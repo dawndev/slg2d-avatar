@@ -26,7 +26,7 @@ class SystemPromptRunner : CommandLineRunner {
         logger.info(
             "目标集群ID:{}, 服务器地址:{}:{}",
             serverProperties.clusterId,
-            serverProperties.address,
+            serverProperties.host,
             serverProperties.port
         )
         logger.info(

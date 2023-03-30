@@ -44,5 +44,5 @@ fun main(args: Array<String>) {
     BeanUtil.initialize(context)
 
     val avatarContext = context.getBean(AvatarContext::class.java)
-    avatarContext.bootstrap()
+    avatarContext.startup()
 }

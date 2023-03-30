@@ -24,10 +24,12 @@ repositories {
 }
 
 dependencies {
+	implementation(Deps.BaseProto)
 	implementation(Deps.SpringBoot.Starter)
 	implementation(Deps.Kotlin.Reflect)
 	implementation(Deps.Akka.Actor)
 	implementation(Deps.Netty.All)
+	implementation(Deps.Protobuf)
 	annotationProcessor(Deps.SpringBoot.ConfigProcessor)
 	implementation(Deps.SpringBoot.StarterTest)
 }

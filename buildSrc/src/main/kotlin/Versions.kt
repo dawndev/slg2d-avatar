@@ -1,6 +1,6 @@
 object Versions {
     // 项目依赖proto
-    const val BaseProto = "1.4.93"
+    const val BaseProto = "1.4.100"
     const val Framework = "4.0.13"
 
     const val Akka = "2.6.20"
