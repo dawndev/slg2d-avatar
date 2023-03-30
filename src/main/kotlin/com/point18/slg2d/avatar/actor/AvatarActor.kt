@@ -1,6 +1,8 @@
 package com.point18.slg2d.avatar.actor
 
 import akka.actor.AbstractActor
+import akka.actor.ActorRef
+import akka.actor.PoisonPill
 import com.point18.slg2d.avatar.extension.Actor
 import com.point18.slg2d.avatar.pojo.AvatarVo
 import org.slf4j.LoggerFactory
@@ -14,23 +16,28 @@ class AvatarActor : AbstractActor {
 
     constructor() : super()
 
-    constructor(avatarVo: AvatarVo) : super()
+    constructor(avatarVo: AvatarVo) : super() {
+        this.avatarVo = avatarVo
+    }
 
     override fun createReceive(): Receive {
 
         return receiveBuilder()
             .match(
                 String::class.java
-            ) { s: String? -> println("Received String message: {}") }
-            .matchAny { o: Any? -> println("received unknown message") }
+            ) { s: String -> logger.info("Received String message: {}", s) }
+            .matchAny { o: Any? -> logger.info("received unknown message: {}", o) }
             .build()
     }
 
     override fun preStart() {
-        logger.info("actor start")
+        logger.debug("{} start, name:{}", self.path().name(), avatarVo)
+        if (avatarVo == null) {
+            self.tell(PoisonPill.getInstance(), ActorRef.noSender())
+        }
     }
 
     override fun postStop() {
-        logger.info("actor stop")
+        logger.debug("{} stop, name:{}", self.path().name(), avatarVo)
     }
 }

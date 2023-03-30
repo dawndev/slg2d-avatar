@@ -8,7 +8,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 
 @Component
-class ShutdownRunner : CommandLineRunner {
+class ShutdownHookRunner : CommandLineRunner {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 

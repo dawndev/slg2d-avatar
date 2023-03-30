@@ -1,6 +1,8 @@
 package com.point18.slg2d.avatar.event
 
+import akka.actor.ActorRef
 import akka.actor.ActorSystem
+import akka.actor.PoisonPill
 import com.point18.slg2d.avatar.config.AvatarProperties
 import com.point18.slg2d.avatar.extension.SpringExtension
 import com.point18.slg2d.avatar.pojo.AvatarVo
@@ -42,8 +44,10 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
         val avatarVo = AvatarVo(robotNo, name)
         logger.info("mock::{}", avatarVo)
         val actorName = actorNamePrefix + robotNo
-        springExtension.actorOf(actorSystem, "avatarActor", actorName, avatarVo)
+        val actor = springExtension.actorOf(actorSystem, "avatarActor", actorName, avatarVo)
 
+        Thread.sleep(2000)
         //PoisonPill
+        actor.tell(PoisonPill.getInstance(), ActorRef.noSender())
     }
 }

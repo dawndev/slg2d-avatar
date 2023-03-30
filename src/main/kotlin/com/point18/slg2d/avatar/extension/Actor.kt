@@ -1,16 +1,12 @@
-package com.point18.slg2d.avatar.extension;
+package com.point18.slg2d.avatar.extension
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.core.annotation.AliasFor;
-import org.springframework.stereotype.Component;
-import java.lang.annotation.*;
+import org.springframework.context.annotation.Scope
+import org.springframework.core.annotation.AliasFor
+import org.springframework.stereotype.Component
 
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+@MustBeDocumented
 @Component
 @Scope("prototype")
-public @interface Actor {
-    @AliasFor(annotation = Component.class)
-    String value() default "";
-}
+annotation class Actor(@get:AliasFor(annotation = Component::class) val value: String = "")
