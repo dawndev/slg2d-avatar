@@ -29,6 +29,7 @@ object Deps {
         const val ConfigProcessor = "org.springframework.boot:spring-boot-configuration-processor:${Versions.SpringBoot}"
         const val StarterLogging = "org.springframework.boot:spring-boot-starter-logging:${Versions.SpringBoot}"
         const val StarterShell = "org.springframework.shell:spring-shell-starter:${Versions.SpringBootStarterShell}"
+        const val StaterStateMachine = "org.springframework.statemachine:spring-statemachine-core:${Versions.SpringStateMachine}"
         const val StarterTest = "org.springframework.boot:spring-boot-starter-test:${Versions.SpringBoot}"
     }
 

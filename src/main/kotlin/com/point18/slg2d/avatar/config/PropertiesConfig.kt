@@ -53,8 +53,10 @@ class ServerProperties {
 @ConfigurationProperties(prefix = "slg2d.avatar", ignoreInvalidFields = false)
 class AvatarProperties {
     var nameprefix: String? = null
-    var nameStart: Int? = null
+    var startId: Int? = null
     var onlineNum: Int? = null
     var totalNum: Int? = null
     var scenario: MockSceneType? = null
+    var extend: String? = null
+    var speed: Int? = null
 }
