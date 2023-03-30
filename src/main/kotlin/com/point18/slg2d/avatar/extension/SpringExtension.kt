@@ -8,16 +8,16 @@ import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
-//@Component
+@Component
 class SpringExtension : AbstractExtensionId<SpringExt>() {
 
-    //@Autowired
+    @Autowired
     private lateinit var applicationContext: ApplicationContext
 
-    //@Autowired
+    @Autowired
     private lateinit var actorSystem: ActorSystem
 
-    //@PostConstruct
+    @PostConstruct
     fun postConstruct() {
         this[actorSystem].initialize(applicationContext)
     }

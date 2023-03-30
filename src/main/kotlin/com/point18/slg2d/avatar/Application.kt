@@ -7,10 +7,7 @@ import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 
-/**
- * java -jar slg2d-avatar.jar --spring.config.name=xxx
- */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["com.point18.slg2d.avatar"])
 @ConfigurationPropertiesScan("com.point18.slg2d.avatar.config")
 class Application
 

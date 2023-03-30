@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
 import org.springframework.core.convert.converter.Converter
-import org.springframework.validation.annotation.Validated
 
 @Configuration
 class PropertiesConfig {
@@ -28,23 +27,22 @@ class PropertiesConfig {
     }
 }
 
-@Validated
+@PropertySource(value = ["file:\${user.dir}/config/avatar.properties"], encoding = "UTF-8")
 @ConfigurationProperties(prefix = "slg2d.server", ignoreInvalidFields = false)
-@PropertySource(value = ["file:///./config/avatar.properties"])
 class ServerProperties {
-    var clusterId: Long = 0
-    var address: String = ""
-    var port: Int = 0
-    var area: Int = 0
-    var partition: Int = 0
+    var clusterId: Long? = null
+    var address: String? = null
+    var port: Int? = null
+    var area: Int? = null
+    var partition: Int? = null
 }
 
+@PropertySource(value = ["file:\${user.dir}/config/avatar.properties"], encoding = "UTF-8")
 @ConfigurationProperties(prefix = "slg2d.avatar", ignoreInvalidFields = false)
-@PropertySource(value = ["file:///./config/avatar.properties"])
 class AvatarProperties {
-    var nameprefix: String = ""
-    var nameStart: Int = 0
-    var onlineNum: Int = 0
-    var totalNum: Int = 0
+    var nameprefix: String? = null
+    var nameStart: Int? = null
+    var onlineNum: Int? = null
+    var totalNum: Int? = null
     var scenario: MockSceneType? = null
 }
