@@ -1,79 +1,71 @@
-package com.point18.slg2d.avatar.extension;
+package com.point18.slg2d.avatar.extension
 
-import org.springframework.context.ApplicationContext;
-import akka.actor.Actor;
-import akka.actor.IndirectActorProducer;
+import akka.actor.Actor
+import akka.actor.IndirectActorProducer
+import org.springframework.context.ApplicationContext
 
 /**
  * An actor producer that lets Spring create the Actor instances.
  */
-public class SpringActorProducer implements IndirectActorProducer {
+class SpringActorProducer : IndirectActorProducer {
 
-    private final ApplicationContext applicationContext;
-    private final String actorBeanName;
-    private final Class<?> requiredType;
-    private final Object[] args;
+    private val applicationContext: ApplicationContext
+    private val actorBeanName: String?
+    private val requiredType: Class<*>?
+    private val args: Array<Any>?
 
-    public SpringActorProducer(ApplicationContext applicationContext, String actorBeanName) {
-        this.applicationContext = applicationContext;
-        this.actorBeanName = actorBeanName;
-        this.requiredType = null;
-        this.args = null;
+    constructor(applicationContext: ApplicationContext, actorBeanName: String?) {
+        this.applicationContext = applicationContext
+        this.actorBeanName = actorBeanName
+        requiredType = null
+        args = null
     }
 
-    public SpringActorProducer(ApplicationContext applicationContext, String actorBeanName, Object[] args) {
-        this.applicationContext = applicationContext;
-        this.actorBeanName = actorBeanName;
-        this.requiredType = null;
-        this.args = args;
+    constructor(applicationContext: ApplicationContext, actorBeanName: String?, args: Array<Any>?) {
+        this.applicationContext = applicationContext
+        this.actorBeanName = actorBeanName
+        requiredType = null
+        this.args = args
     }
 
-    public SpringActorProducer(ApplicationContext applicationContext, Class<?> requiredType) {
-        this.applicationContext = applicationContext;
-        this.actorBeanName = null;
-        this.requiredType = requiredType;
-        this.args = null;
+    constructor(applicationContext: ApplicationContext, requiredType: Class<*>?) {
+        this.applicationContext = applicationContext
+        actorBeanName = null
+        this.requiredType = requiredType
+        args = null
     }
 
-    public SpringActorProducer(ApplicationContext applicationContext, Class<?> requiredType, Object[] args) {
-        this.applicationContext = applicationContext;
-        this.actorBeanName = null;
-        this.requiredType = requiredType;
-        this.args = args;
+    constructor(applicationContext: ApplicationContext, requiredType: Class<*>?, args: Array<Any>?) {
+        this.applicationContext = applicationContext
+        actorBeanName = null
+        this.requiredType = requiredType
+        this.args = args
     }
 
-    public SpringActorProducer(ApplicationContext applicationContext, String actorBeanName, Class<?> requiredType) {
-        this.applicationContext = applicationContext;
-        this.actorBeanName = actorBeanName;
-        this.requiredType = requiredType;
-        this.args = null;
+    constructor(applicationContext: ApplicationContext, actorBeanName: String?, requiredType: Class<*>?) {
+        this.applicationContext = applicationContext
+        this.actorBeanName = actorBeanName
+        this.requiredType = requiredType
+        args = null
     }
 
-    @Override
-    public Actor produce() {
-        Actor result;
-        if (actorBeanName != null && requiredType != null) {
-            result = (Actor) applicationContext.getBean(actorBeanName, requiredType);
-        } else if (requiredType != null) {
-            if (args == null) {
-                result = (Actor) applicationContext.getBean(requiredType);
-            } else {
-                result = (Actor) applicationContext.getBean(requiredType, args);
-            }
+    override fun produce(): Actor = if (actorBeanName != null && requiredType != null) {
+        applicationContext.getBean(actorBeanName, requiredType) as Actor
+    } else if (requiredType != null) {
+        if (args == null) {
+            applicationContext.getBean(requiredType) as Actor
         } else {
-            if (args == null) {
-                result = (Actor) applicationContext.getBean(actorBeanName);
-            } else {
-                result = (Actor) applicationContext.getBean(actorBeanName, args);
-            }
-
+            applicationContext.getBean(requiredType, *args) as Actor
         }
-        return result;
+    } else {
+        if (args == null) {
+            applicationContext.getBean(actorBeanName!!) as Actor
+        } else {
+            applicationContext.getBean(actorBeanName!!, *args) as Actor
+        }
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public Class<? extends Actor> actorClass() {
-        return (Class<? extends Actor>) (requiredType != null ? requiredType : applicationContext.getType(actorBeanName));
+    override fun actorClass(): Class<out Actor> {
+        return (requiredType ?: applicationContext.getType(actorBeanName!!)) as Class<out Actor>
     }
 }
