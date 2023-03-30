@@ -27,7 +27,7 @@ class AkkaConfig {
     fun actorSystem(): ActorSystem {
         val config = akkaConfiguration()
         val actorSystem = ActorSystem.create(systemName, config)
-        logger.info("创建ActorSystem【{}】成功;-)", systemName)
+        logger.info("Create ActorSystem {} Finished", systemName)
         return actorSystem
     }
 }
