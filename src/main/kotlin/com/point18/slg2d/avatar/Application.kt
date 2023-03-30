@@ -1,6 +1,5 @@
 package com.point18.slg2d.avatar
 
-import com.point18.slg2d.avatar.util.BeanUtil
 import org.springframework.boot.Banner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.WebApplicationType
@@ -39,9 +38,6 @@ fun main(args: Array<String>) {
     application.setBannerMode(Banner.Mode.LOG)
     application.webApplicationType = WebApplicationType.NONE
     val context = application.run(*args)
-
-    // 设置全局静态变量
-    BeanUtil.initialize(context)
 
     val avatarContext = context.getBean(AvatarContext::class.java)
     avatarContext.startup()
