@@ -2,15 +2,17 @@ package com.point18.slg2d.avatar.event
 
 import akka.actor.ActorRef
 import akka.actor.ActorSystem
-import akka.actor.PoisonPill
+import com.point18.slg2d.avatar.actor.AvatarFSM
 import com.point18.slg2d.avatar.config.AvatarProperties
+import com.point18.slg2d.avatar.extension.Actor
 import com.point18.slg2d.avatar.extension.SpringExtension
-import com.point18.slg2d.avatar.pojo.AvatarVo
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationListener
 import org.springframework.stereotype.Component
+import java.util.concurrent.ConcurrentHashMap
+import javax.annotation.PostConstruct
 
 @Component
 class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
@@ -29,25 +31,40 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+    private val actorMap = ConcurrentHashMap<Int, ActorRef>()
+
+    private lateinit var actorBeanName: String
+
+    @PostConstruct
+    fun prepareActorBeanName() {
+        val annotation = AvatarFSM::class.java.getAnnotation(Actor::class.java)
+            ?: throw IllegalArgumentException("AvatarRegisterHandler::获取不到actorBeanName")
+        actorBeanName = annotation.value
+
+        logger.debug("prepareActorBeanName: {}", actorBeanName)
+    }
+
     override fun onApplicationEvent(event: StartupEvent) {
         val totalNum = avatarProperties.totalNum ?: 0
         val startId = avatarProperties.startId ?: 0
-        val nameprefix = avatarProperties.nameprefix ?: "AAR"
+        val namePrefix = avatarProperties.nameprefix ?: "AAR"
         for (index in 0 until totalNum) {
             val robotNo = index + startId
-            val name = String.format("%s%06d", nameprefix, robotNo)
-            this.createAvatar(robotNo, name)
+            val robotName = String.format("%s%06d", namePrefix, robotNo)
+            this.actorMap[robotNo] = this.createAvatar(robotNo, robotName)
+        }
+        logger.info("avatar创建总数量:{}~", totalNum)
+
+        for ((robotNo, actor) in actorMap) {
+            actor.tell(robotNo, ActorRef.noSender())
         }
     }
 
-    private fun createAvatar(robotNo: Int, name: String) {
-        val avatarVo = AvatarVo(robotNo, name)
-        logger.info("mock::{}", avatarVo)
+    private fun createAvatar(robotNo: Int, name: String): ActorRef {
+        if (!this::actorBeanName.isInitialized) {
+            throw IllegalArgumentException("AvatarRegisterHandler::获取不到actorBeanName")
+        }
         val actorName = actorNamePrefix + robotNo
-        val actor = springExtension.actorOf(actorSystem, "avatarActor", actorName, avatarVo)
-
-        Thread.sleep(2000)
-        //PoisonPill
-        actor.tell(PoisonPill.getInstance(), ActorRef.noSender())
+        return springExtension.actorOf(actorSystem, actorBeanName, actorName)
     }
 }
