@@ -1,5 +1,7 @@
 package com.point18.slg2d.avatar
 
+import com.point18.slg2d.avatar.actor.ActorStopEvent
+import com.point18.slg2d.avatar.event.ActorStopEventBus
 import com.point18.slg2d.avatar.event.StartupEvent
 import com.point18.slg2d.avatar.pojo.AvatarVo
 import com.point18.slg2d.avatar.pojo.ConnectedChannelInfo
@@ -7,6 +9,7 @@ import io.netty.bootstrap.Bootstrap
 import io.netty.channel.Channel
 import io.netty.channel.ChannelFuture
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.ApplicationEventPublisherAware
 import org.springframework.stereotype.Service
@@ -28,6 +31,8 @@ class AvatarContext : ApplicationEventPublisherAware {
     private val connectedChannelList = ConcurrentLinkedQueue<ConnectedChannelInfo>() // 连接上的channel表
     private val registeredRobots = ConcurrentHashMap<Channel, AvatarVo>() // channel对应的robot
 
+    @Autowired
+    private lateinit var actorStopEventBus: ActorStopEventBus
 
     /**
      * 启动
@@ -40,7 +45,7 @@ class AvatarContext : ApplicationEventPublisherAware {
 
     @PreDestroy
     fun dispose() {
-        // pass
+        actorStopEventBus.publish(ActorStopEvent)
     }
 
     override fun setApplicationEventPublisher(applicationEventPublisher: ApplicationEventPublisher) {

@@ -3,6 +3,8 @@ package com.point18.slg2d.avatar.event
 import akka.actor.ActorRef
 import akka.actor.ActorSystem
 import com.point18.slg2d.avatar.actor.AvatarFSM
+import com.point18.slg2d.avatar.actor.Disconnected
+import com.point18.slg2d.avatar.actor.TodoEvent
 import com.point18.slg2d.avatar.config.AvatarProperties
 import com.point18.slg2d.avatar.extension.Actor
 import com.point18.slg2d.avatar.extension.SpringExtension
@@ -47,20 +49,31 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
     override fun onApplicationEvent(event: StartupEvent) {
         val totalNum = avatarProperties.totalNum ?: 0
         val startId = avatarProperties.startId ?: 0
-        val namePrefix = avatarProperties.nameprefix ?: "AAR"
         for (index in 0 until totalNum) {
             val robotNo = index + startId
-            val robotName = String.format("%s%06d", namePrefix, robotNo)
-            this.actorMap[robotNo] = this.createAvatar(robotNo, robotName)
+            this.actorMap[robotNo] = this.createAvatar(robotNo)
         }
+
         logger.info("avatar创建总数量:{}~", totalNum)
 
+        // 准备一些资源
         for ((robotNo, actor) in actorMap) {
-            actor.tell(robotNo, ActorRef.noSender())
+            actor.tell(Integer.valueOf(robotNo), ActorRef.noSender())
         }
+
+        // 开始运行
+        for ((_, actor) in actorMap) {
+            actor.tell(TodoEvent, ActorRef.noSender())
+        }
+
+        // down掉
+        for ((_, actor) in actorMap) {
+            //actor.tell(Disconnected, ActorRef.noSender())
+        }
+
     }
 
-    private fun createAvatar(robotNo: Int, name: String): ActorRef {
+    private fun createAvatar(robotNo: Int): ActorRef {
         if (!this::actorBeanName.isInitialized) {
             throw IllegalArgumentException("AvatarRegisterHandler::获取不到actorBeanName")
         }
