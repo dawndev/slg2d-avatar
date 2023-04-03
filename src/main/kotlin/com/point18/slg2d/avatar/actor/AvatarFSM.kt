@@ -43,6 +43,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData> {
                 val namePrefix = avatarProperties.nameprefix
                 val robotName = String.format("%s%06d", namePrefix, robotNo)
                 if (namePrefix == null) {
+                    logger.error("robotNo: {}, 找不到namePrefix", robotNo)
                     stay()
                 } else {
                     goTo(AvatarState.READY).using(AvatarVo(robotNo.toInt(), robotName))
@@ -91,7 +92,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData> {
         // region 状态捕获
         onTransition(
             matchState(AvatarState.NEW, AvatarState.READY, FI.UnitApplyVoid {
-                logger.debug("ready")
+                logger.debug("NEW-->READY")
             }).state(AvatarState.READY, AvatarState.RUNNING, FI.UnitApplyVoid {
                 val m = UnitMatch.create(matchData(AvatarVo::class.java) {
                     logger.info("准备建立连接:{}", it)
