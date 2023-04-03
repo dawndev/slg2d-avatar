@@ -11,7 +11,7 @@ import com.point18.slg2d.avatar.constg.AvatarState
 import com.point18.slg2d.avatar.event.ActorStopEventBus
 import com.point18.slg2d.avatar.event.ActorStopEventBus.Companion.ACTOR_STOP_BUS_ALL
 import com.point18.slg2d.avatar.extension.Actor
-import com.point18.slg2d.avatar.pojo.AvatarVo
+import com.point18.slg2d.avatar.pojo.AvatarDefinition
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -30,15 +30,15 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData> {
 
     init {
         // starting point
-        startWith(AvatarState.NEW, AvatarVo(0, "undefined"))
+        startWith(AvatarState.NEW, AvatarDefinition(0, "undefined"))
 
         `when`(
             AvatarState.NEW,
             matchEvent(
                 SetEvent::class.java,
-                AvatarVo::class.java
+                AvatarDefinition::class.java
             ) { param1, _ ->
-                goTo(AvatarState.READY).using(AvatarVo(param1.robotNo, param1.robotName))
+                goTo(AvatarState.READY).using(AvatarDefinition(param1.robotNo, param1.robotName))
             }.event(Integer::class.java) { robotNo, _ ->
                 val namePrefix = avatarProperties.nameprefix
                 val robotName = String.format("%s%06d", namePrefix, robotNo)
@@ -46,7 +46,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData> {
                     logger.error("robotNo: {}, 找不到namePrefix", robotNo)
                     stay()
                 } else {
-                    goTo(AvatarState.READY).using(AvatarVo(robotNo.toInt(), robotName))
+                    goTo(AvatarState.READY).using(AvatarDefinition(robotNo.toInt(), robotName))
                 }
             }
         )
@@ -55,7 +55,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData> {
             AvatarState.READY,
             matchEvent(
                 TodoEvent::class.java,
-                AvatarVo::class.java
+                AvatarDefinition::class.java
             ) { _, vo ->
                 goTo(AvatarState.RUNNING).using(vo)
             }
@@ -94,7 +94,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData> {
             matchState(AvatarState.NEW, AvatarState.READY, FI.UnitApplyVoid {
                 logger.debug("NEW-->READY")
             }).state(AvatarState.READY, AvatarState.RUNNING, FI.UnitApplyVoid {
-                val m = UnitMatch.create(matchData(AvatarVo::class.java) {
+                val m = UnitMatch.create(matchData(AvatarDefinition::class.java) {
                     logger.info("准备建立连接:{}", it)
                 })
                 m.match(stateData())

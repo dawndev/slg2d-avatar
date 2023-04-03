@@ -1,9 +1,9 @@
 package com.point18.slg2d.avatar.event
 
 import akka.actor.ActorRef
+import akka.actor.ActorSelection
 import akka.actor.ActorSystem
 import com.point18.slg2d.avatar.actor.AvatarFSM
-import com.point18.slg2d.avatar.actor.Disconnected
 import com.point18.slg2d.avatar.actor.TodoEvent
 import com.point18.slg2d.avatar.config.AvatarProperties
 import com.point18.slg2d.avatar.extension.Actor
@@ -61,10 +61,10 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
             actor.tell(Integer.valueOf(robotNo), ActorRef.noSender())
         }
 
-        // 开始运行
-        for ((_, actor) in actorMap) {
-            actor.tell(TodoEvent, ActorRef.noSender())
-        }
+        // 开始运行, 通过selection实例，批量发送消息
+        // akka://AVATAR-WORLD/user/
+        val selection: ActorSelection = actorSystem.actorSelection("user/$actorNamePrefix-*")
+        selection.tell(TodoEvent, ActorRef.noSender())
 
         // down掉
         for ((_, actor) in actorMap) {
@@ -77,7 +77,7 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
         if (!this::actorBeanName.isInitialized) {
             throw IllegalArgumentException("AvatarRegisterHandler::获取不到actorBeanName")
         }
-        val actorName = actorNamePrefix + robotNo
+        val actorName = "$actorNamePrefix-$robotNo"
         return springExtension.actorOf(actorSystem, actorBeanName, actorName)
     }
 }

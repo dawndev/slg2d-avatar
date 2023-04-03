@@ -4,7 +4,7 @@ import akka.actor.AbstractActor
 import akka.actor.ActorRef
 import akka.actor.PoisonPill
 import com.point18.slg2d.avatar.extension.Actor
-import com.point18.slg2d.avatar.pojo.AvatarVo
+import com.point18.slg2d.avatar.pojo.AvatarDefinition
 import org.slf4j.LoggerFactory
 
 @Actor("avatarActor")
@@ -12,11 +12,11 @@ class AvatarActor : AbstractActor {
 
     private val logger = LoggerFactory.getLogger(AvatarActor::class.java)
 
-    private var avatarVo: AvatarVo? = null
+    private var avatarVo: AvatarDefinition? = null
 
     constructor() : super()
 
-    constructor(avatarVo: AvatarVo) : super() {
+    constructor(avatarVo: AvatarDefinition) : super() {
         this.avatarVo = avatarVo
     }
 

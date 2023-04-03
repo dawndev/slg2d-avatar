@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.util.AttributeKey
-import com.point18.slg2d.avatar.pojo.AvatarVo
+import com.point18.slg2d.avatar.pojo.AvatarDefinition
 
 
 @ChannelHandler.Sharable
@@ -16,6 +16,6 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
     }
 
     companion object {
-        val sessionKey = AttributeKey.valueOf<AvatarVo>("key")   //定义一个属性，相当于map键值对：key是name，value是ActorRef
+        val sessionKey = AttributeKey.valueOf<AvatarDefinition>("key")   //定义一个属性，相当于map键值对：key是name，value是ActorRef
     }
 }

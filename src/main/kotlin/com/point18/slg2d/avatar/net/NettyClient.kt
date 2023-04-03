@@ -3,6 +3,7 @@ package com.point18.slg2d.avatar.net
 import com.point18.slg2d.avatar.constg.Parameter
 import com.point18.slg2d.avatar.net.handler.ClientHandlerInitializer
 import io.netty.bootstrap.Bootstrap
+import io.netty.channel.Channel
 import io.netty.channel.ChannelOption
 import io.netty.channel.EventLoopGroup
 import io.netty.channel.nio.NioEventLoopGroup
@@ -10,6 +11,7 @@ import io.netty.channel.socket.nio.NioSocketChannel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
 
@@ -21,8 +23,10 @@ class NettyClient {
     private val group: EventLoopGroup = NioEventLoopGroup()
     private val bootstrap: Bootstrap = Bootstrap()
 
-
-    //@PostConstruct
+    /**
+     * netty引导
+     */
+    @PostConstruct
     fun startup() {
         with(this.bootstrap) {
             group(group)
@@ -46,11 +50,19 @@ class NettyClient {
             option(ChannelOption.SO_REUSEADDR, true)
 
             handler(ClientHandlerInitializer())
+        }.run {
+            logger.info("初始化Netty客户端完毕")
         }
     }
 
     @PreDestroy
     fun stop() {
-        // pass
+        val nettyFuture = group.shutdownGracefully()
+        nettyFuture.await()
+    }
+
+    fun connect(addr: String, port: Int): Channel {
+        val channelFuture = this.bootstrap.connect(addr, port)
+        return channelFuture.channel()
     }
 }
