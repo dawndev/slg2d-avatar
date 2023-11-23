@@ -28,7 +28,7 @@ class AvatarContext : ApplicationEventPublisherAware {
 
     private lateinit var eventPublisher: ApplicationEventPublisher
 
-    // 连接channel和机器人的关联表
+    // 连接channel和机器人的关联表 holder
     private val connectedChannelList = ConcurrentLinkedQueue<ConnectedChannelInfo>() // 连接上的channel表
     private val registeredRobots = ConcurrentHashMap<Channel, AvatarDefinition>() // channel对应的robot
 

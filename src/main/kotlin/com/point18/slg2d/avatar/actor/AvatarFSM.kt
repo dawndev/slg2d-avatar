@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
 @Actor("avatarFSM")
-class AvatarFSM : AbstractFSM<AvatarState, AvatarData> {
+class AvatarFSM() : AbstractFSM<AvatarState, AvatarData>() {
 
     private val logger = LoggerFactory.getLogger(AvatarActor::class.java)
 
@@ -25,8 +25,6 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData> {
 
     @Autowired
     private lateinit var actorStopEventBus: ActorStopEventBus
-
-    constructor() : super()
 
     init {
         // starting point
