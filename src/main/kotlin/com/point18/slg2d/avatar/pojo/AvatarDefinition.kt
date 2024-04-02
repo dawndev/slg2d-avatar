@@ -12,7 +12,6 @@ class AvatarDefinition(
 
     var aesKey: String = Parameter.DEFAULT_KEY        // 加密密钥
 
-    var channel: Channel? = null  //  robot链接服务器完成后获得一个Channel 以后该机器人发消息都是通过这个Channel
     var sendNo: Int = 1  //  该机器人发送的第sendNo个消息
 
     var logined: Boolean = false  //是否登陆成功

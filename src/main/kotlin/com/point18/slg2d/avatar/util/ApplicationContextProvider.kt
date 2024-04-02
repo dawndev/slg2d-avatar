@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Component
 
 @Component
-class SpringUtils : ApplicationContextAware {
+class ApplicationContextProvider : ApplicationContextAware {
 
     @Throws(BeansException::class)
     override fun setApplicationContext(applicationContext: ApplicationContext) {

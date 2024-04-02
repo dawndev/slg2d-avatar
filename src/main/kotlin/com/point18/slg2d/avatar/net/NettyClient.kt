@@ -2,6 +2,7 @@ package com.point18.slg2d.avatar.net
 
 import com.point18.slg2d.avatar.constg.Parameter
 import com.point18.slg2d.avatar.net.handler.ClientHandlerInitializer
+import com.point18.slg2d.avatar.net.handler.RobotClientHandler
 import io.netty.bootstrap.Bootstrap
 import io.netty.channel.Channel
 import io.netty.channel.ChannelOption
@@ -11,6 +12,7 @@ import io.netty.channel.socket.nio.NioSocketChannel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.lang.IllegalArgumentException
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
@@ -61,8 +63,19 @@ class NettyClient {
         nettyFuture.await()
     }
 
-    fun connect(addr: String, port: Int): Channel {
-        val channelFuture = this.bootstrap.connect(addr, port)
-        return channelFuture.channel()
+    fun connect(clientId: Int, serverHost: String?, serverPort: Int?) {
+        if (serverHost == null || serverPort == null) {
+            throw IllegalArgumentException("NettyClient::connect参数发生异常,serverHost:$serverHost, serverPort:$serverPort")
+        }
+
+        // 连接到服务器
+        val future = this.bootstrap.connect(serverHost, serverPort).sync()
+
+        // 获取 Channel，并设置附加信息
+        val channel = future.channel()
+        channel.attr(RobotClientHandler.CLIENT_ID).set(clientId.toString())
+
+        // 等待连接关闭
+        channel.closeFuture().sync()
     }
 }

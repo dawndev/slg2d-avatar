@@ -4,6 +4,7 @@ import akka.actor.ActorRef
 import akka.actor.ActorSelection
 import akka.actor.ActorSystem
 import com.point18.slg2d.avatar.actor.AvatarFSM
+import com.point18.slg2d.avatar.actor.ConnectedEvent
 import com.point18.slg2d.avatar.actor.TodoEvent
 import com.point18.slg2d.avatar.config.AvatarProperties
 import com.point18.slg2d.avatar.extension.Actor
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
 import javax.annotation.PostConstruct
 
+/**
+ * 机器人启动注册器
+ */
 @Component
 class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
 
@@ -79,5 +83,18 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
         }
         val actorName = "$actorNamePrefix-$robotNo"
         return springExtension.actorOf(actorSystem, actorBeanName, actorName)
+    }
+
+    fun tellActor(no: Int, any: Any): Boolean {
+        val actorRef = this.actorMap[no]
+            ?: return false
+        actorRef.tell(any, ActorRef.noSender())
+        return true
+    }
+
+    fun tellActor2(no: Int, any: Any): Boolean {
+        val selection: ActorSelection = actorSystem.actorSelection("user/$actorNamePrefix-$no")
+        selection.tell(ConnectedEvent, ActorRef.noSender())
+        return true
     }
 }
