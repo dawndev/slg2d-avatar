@@ -2,6 +2,7 @@ package com.point18.slg2d.avatar.net.handler
 
 import com.point18.slg2d.avatar.actor.ConnectedEvent
 import com.point18.slg2d.avatar.event.AvatarRegisterHandler
+import com.point18.slg2d.avatar.exception.ChannelAttrException
 import com.point18.slg2d.common.netmsg.C2SMsg
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
@@ -11,6 +12,7 @@ import com.point18.slg2d.avatar.pojo.AvatarDefinition
 import com.point18.slg2d.avatar.util.ApplicationContextProvider
 import org.slf4j.LoggerFactory
 import java.lang.IllegalArgumentException
+import java.util.Optional
 import java.util.concurrent.TimeUnit
 
 
@@ -20,8 +22,10 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun channelActive(ctx: ChannelHandlerContext) {
-
-        val clientId = ctx.channel().attr(CLIENT_ID).get()
+        val attribute = Optional.ofNullable(ctx.channel().attr(CLIENT_ID)).orElseThrow {
+            ChannelAttrException()
+        }
+        val clientId = attribute.get()
         println("val clientId = ctx.channel().attr(CLIENT_ID).get()${clientId}")
         val robotNo = clientId.toIntOrNull()
             ?: throw IllegalArgumentException("RobotClientHandler::channelActive取不到参数")
@@ -41,9 +45,10 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
     @Deprecated("Deprecated in Java")
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
         val clientId = ctx.channel().attr(CLIENT_ID).get()
+
         println("Client $clientId encountered exception: ${cause.message}, ${cause::class.java}")
 
-        if (cause is NullPointerException) {
+        if (cause is ChannelAttrException) {
             // 等待连接建立完成
             println("定时获取下")
             ctx.channel().eventLoop().schedule({
