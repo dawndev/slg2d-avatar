@@ -22,11 +22,9 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun channelActive(ctx: ChannelHandlerContext) {
-        val attribute = Optional.ofNullable(ctx.channel().attr(CLIENT_ID)).orElseThrow {
+        val clientId = Optional.ofNullable(ctx.channel().attr(CLIENT_ID).get()).orElseThrow {
             ChannelAttrException()
         }
-        val clientId = attribute.get()
-        println("val clientId = ctx.channel().attr(CLIENT_ID).get()${clientId}")
         val robotNo = clientId.toIntOrNull()
             ?: throw IllegalArgumentException("RobotClientHandler::channelActive取不到参数")
 
@@ -44,23 +42,31 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
 
     @Deprecated("Deprecated in Java")
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
-        val clientId = ctx.channel().attr(CLIENT_ID).get()
-
-        println("Client $clientId encountered exception: ${cause.message}, ${cause::class.java}")
-
+        logger.error("RobotClientHandler::exceptionCaught 捕获到了异常, {}", cause::class.java)
         if (cause is ChannelAttrException) {
-            // 等待连接建立完成
-            println("定时获取下")
-            ctx.channel().eventLoop().schedule({
-                // 获取 Channel，并设置附加信息
-                val channel = ctx.channel()
-                val clientId2 = ctx.channel().attr(CLIENT_ID).get()
-                println("s尝试重新获取:${clientId2}")
-            }, 1, TimeUnit.SECONDS)
+            Optional.ofNullable(ctx.channel().attr(CLIENT_ID).get()).ifPresentOrElse({clientId2 ->
+                println("尝试重新获取:${clientId2}")
+            }) {
+                logger.info("注册一个定时任务")
+                ctx.channel().eventLoop().schedule({
+                    // 获取 Channel，并设置附加信息
+                    val attr = ctx.channel().attr(CLIENT_ID)
+                    if (attr != null) {
+                        val clientId2 = attr.get().toIntOrNull()
+                        println("尝试重新获取:${clientId2}")
+                    } else {
+                        ctx.close()
+                    }
+
+                }, 1, TimeUnit.SECONDS)
+            }
         } else {
             ctx.close()
         }
-        //ctx.close()
+    }
+
+    override fun handlerRemoved(ctx: ChannelHandlerContext?) {
+        super.handlerRemoved(ctx)
     }
 
     companion object {
