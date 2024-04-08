@@ -21,7 +21,7 @@ class ShutdownHookRunner : CommandLineRunner {
 //                logger.info("shutdown hook")
 //            })
         CoordinatedShutdown.get(actorSystem).addJvmShutdownHook {
-            logger.info("shutdown")
+            logger.warn("响应宕机~, shutdown")
         }
     }
 }

@@ -11,7 +11,6 @@ import io.netty.util.AttributeKey
 import com.point18.slg2d.avatar.pojo.AvatarDefinition
 import com.point18.slg2d.avatar.util.ApplicationContextProvider
 import org.slf4j.LoggerFactory
-import java.lang.IllegalArgumentException
 import java.util.Optional
 import java.util.concurrent.TimeUnit
 
@@ -22,51 +21,61 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun channelActive(ctx: ChannelHandlerContext) {
-        val clientId = Optional.ofNullable(ctx.channel().attr(CLIENT_ID).get()).orElseThrow {
-            ChannelAttrException()
-        }
-        val robotNo = clientId.toIntOrNull()
-            ?: throw IllegalArgumentException("RobotClientHandler::channelActive取不到参数")
+        val robotNo = ctx.getClientId()
+            ?: throw ChannelAttrException()
 
         // 给指定actor发送通知
         logger.info("客户端收到channel激活通知，通知actor:${robotNo}")
-        ApplicationContextProvider.getBean(AvatarRegisterHandler::class.java)?.let {
-            val rt = it.tellActor2(robotNo, ConnectedEvent)
-            logger.info("客户端收到channel激活通知，结果:$rt")
-        }
+        robotNo.noticeAvatarConnected()
     }
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: C2SMsg) {
-        val clientId = ctx.channel().attr(CLIENT_ID).get()
+        val clientId = ctx.getClientId()
     }
 
     @Deprecated("Deprecated in Java")
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
-        logger.error("RobotClientHandler::exceptionCaught 捕获到了异常, {}", cause::class.java)
         if (cause is ChannelAttrException) {
-            Optional.ofNullable(ctx.channel().attr(CLIENT_ID).get()).ifPresentOrElse({clientId2 ->
-                println("尝试重新获取:${clientId2}")
+            Optional.ofNullable(ctx.getClientId()).ifPresentOrElse({robotNo ->
+                logger.info("第一次尝试重新获取成功~:${robotNo}")
+                robotNo.noticeAvatarConnected()
             }) {
-                logger.info("注册一个定时任务")
+                logger.info("第一次尝试重新获取失败，注册一个定时任务")
                 ctx.channel().eventLoop().schedule({
-                    // 获取 Channel，并设置附加信息
-                    val attr = ctx.channel().attr(CLIENT_ID)
-                    if (attr != null) {
-                        val clientId2 = attr.get().toIntOrNull()
-                        println("尝试重新获取:${clientId2}")
-                    } else {
+                    val robotNo = ctx.getClientId()
+                    logger.info("第二次尝试重新获取结果:${robotNo}")
+                    if (robotNo == null) {
+                        logger.error("第二次依旧获取失败~")
                         ctx.close()
+                    } else {
+                        robotNo.noticeAvatarConnected()
                     }
 
                 }, 1, TimeUnit.SECONDS)
             }
         } else {
+            logger.error("RobotClientHandler::exceptionCaught 捕获到了异常, {}", cause::class.java)
             ctx.close()
         }
     }
 
-    override fun handlerRemoved(ctx: ChannelHandlerContext?) {
+    override fun handlerRemoved(ctx: ChannelHandlerContext) {
         super.handlerRemoved(ctx)
+        logger.info("actor:[${ctx.getClientId()}]的channel[${ctx.name()}]被移除~")
+    }
+
+
+    private fun Int.noticeAvatarConnected() {
+        ApplicationContextProvider.getBean(AvatarRegisterHandler::class.java)?.let {
+            val rt = it.tellActor2(this, ConnectedEvent)
+            logger.info("客户端收到channel激活通知actor:${this}，结果:$rt")
+        }
+    }
+
+
+    private fun ChannelHandlerContext.getClientId(): Int? {
+        val clientId = Optional.ofNullable(channel().attr(CLIENT_ID).get()).orElseGet { null }
+        return clientId?.toIntOrNull()
     }
 
     companion object {

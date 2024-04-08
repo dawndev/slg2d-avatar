@@ -4,7 +4,6 @@ import com.point18.slg2d.avatar.constg.Parameter
 import com.point18.slg2d.avatar.net.handler.ClientHandlerInitializer
 import com.point18.slg2d.avatar.net.handler.RobotClientHandler
 import io.netty.bootstrap.Bootstrap
-import io.netty.channel.Channel
 import io.netty.channel.ChannelOption
 import io.netty.channel.EventLoopGroup
 import io.netty.channel.nio.NioEventLoopGroup
@@ -68,14 +67,33 @@ class NettyClient {
             throw IllegalArgumentException("NettyClient::connect参数发生异常,serverHost:$serverHost, serverPort:$serverPort")
         }
 
+//        // 连接到服务器
+//        val future = this.bootstrap.connect(serverHost, serverPort).sync()
+//
+//        // 获取 Channel，并设置附加信息
+//        val channel = future.channel()
+//        channel.attr(RobotClientHandler.CLIENT_ID).set(clientId.toString())
+//
+//        // 等待连接关闭
+//        channel.closeFuture().sync()
+
         // 连接到服务器
-        val future = this.bootstrap.connect(serverHost, serverPort).sync()
+        val future = this.bootstrap.connect(serverHost, serverPort)
 
         // 获取 Channel，并设置附加信息
         val channel = future.channel()
         channel.attr(RobotClientHandler.CLIENT_ID).set(clientId.toString())
 
-        // 等待连接关闭
-        channel.closeFuture().sync()
+        // 注册连接关闭的回调
+        future.addListener { closeFuture ->
+            if (closeFuture.isSuccess) {
+                // 连接成功关闭
+                // 这里可以进行连接关闭后的处理逻辑
+            } else {
+                // 连接关闭异常
+                val cause = closeFuture.cause()
+                // 这里可以处理连接关闭异常
+            }
+        }
     }
 }
