@@ -82,7 +82,7 @@ class NettyClient {
 
         // 获取 Channel，并设置附加信息
         val channel = future.channel()
-        channel.attr(RobotClientHandler.CLIENT_ID).set(clientId.toString())
+        channel.attr(RobotClientHandler.AVATAR_ID).set(clientId)
 
         // 注册连接关闭的回调
         future.addListener { closeFuture ->

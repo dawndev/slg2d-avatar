@@ -6,13 +6,13 @@ import akka.dispatch.UnboundedPriorityMailbox
 import com.typesafe.config.Config
 
 /**
- * Simple priority queue mapping the task priority to the mailbox priority.
+ * 自定义邮箱设置类
  */
-class PriorityMailbox(settings: ActorSystem.Settings?, config: Config?) :
+class PriorityMailbox(settings: ActorSystem.Settings, config: Config) :
     UnboundedPriorityMailbox(
         object : PriorityGenerator() {
             override fun gen(message: Any): Int {
-                return if (message is Task) {
+                return if (message is IPriorityMessage) {
                     message.priority
                 } else {
                     // default
@@ -21,3 +21,7 @@ class PriorityMailbox(settings: ActorSystem.Settings?, config: Config?) :
             }
         }
     )
+
+interface IPriorityMessage {
+    val priority: Int
+}

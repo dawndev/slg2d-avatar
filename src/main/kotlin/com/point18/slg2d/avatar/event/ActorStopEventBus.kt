@@ -2,7 +2,7 @@ package com.point18.slg2d.avatar.event
 
 import akka.actor.ActorRef
 import akka.event.japi.LookupEventBus
-import com.point18.slg2d.avatar.actor.ActorStopEvent
+import com.point18.slg2d.avatar.pojo.ActorStopEvent
 import org.springframework.stereotype.Component
 
 @Component

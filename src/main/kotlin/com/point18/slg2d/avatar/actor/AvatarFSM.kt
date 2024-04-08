@@ -13,14 +13,14 @@ import com.point18.slg2d.avatar.event.ActorStopEventBus
 import com.point18.slg2d.avatar.event.ActorStopEventBus.Companion.ACTOR_STOP_BUS_ALL
 import com.point18.slg2d.avatar.extension.Actor
 import com.point18.slg2d.avatar.net.NettyClient
-import com.point18.slg2d.avatar.pojo.AvatarDefinition
+import com.point18.slg2d.avatar.pojo.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
 @Actor("avatarFSM")
-class AvatarFSM() : AbstractFSM<AvatarState, AvatarData>() {
+class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
 
-    private val logger = LoggerFactory.getLogger(AvatarActor::class.java)
+    private val logger = LoggerFactory.getLogger(AvatarFSM::class.java)
 
     @Autowired
     private lateinit var avatarProperties: AvatarProperties
@@ -33,15 +33,15 @@ class AvatarFSM() : AbstractFSM<AvatarState, AvatarData>() {
 
     init {
         // starting point
-        startWith(AvatarState.NEW, AvatarDefinition(0, "undefined"))
+        startWith(AvatarState.NEW, AvatarUndefinedData())
 
         `when`(
             AvatarState.NEW,
             matchEvent(
                 SetEvent::class.java,
-                AvatarDefinition::class.java
+                AvatarDefinedData::class.java
             ) { param1, vo ->
-                logger.info("avatar:{} 准备从NEW切入READY~", vo.id)
+                logger.debug("avatar:{} 准备从NEW切入READY~", vo.id)
                 goTo(AvatarState.READY).using(vo)
             }.event(Integer::class.java) { robotNo, _ ->
                 val namePrefix = avatarProperties.nameprefix
@@ -50,9 +50,8 @@ class AvatarFSM() : AbstractFSM<AvatarState, AvatarData>() {
                     logger.error("robotNo: {}, 找不到namePrefix", robotNo)
                     stay()
                 } else {
-                    logger.info("avatar:{} 数据准备完成~", robotNo)
-                    goTo(AvatarState.READY).using(AvatarDefinition(robotNo.toInt(), robotName))
-                    //stay().using(AvatarDefinition(robotNo.toInt(), robotName))
+                    logger.debug("avatar:{} 数据准备完成~", robotNo)
+                    goTo(AvatarState.READY).using(AvatarDefinedData(robotNo.toInt(), robotName))
                 }
             }.anyEvent { e, s ->
                 logger.info("avatar:{} NEW阶段不应该收到 {}~", s, e::class.java)
@@ -64,28 +63,29 @@ class AvatarFSM() : AbstractFSM<AvatarState, AvatarData>() {
             AvatarState.READY,
             matchEvent(
                 TodoEvent::class.java,
-                AvatarDefinition::class.java
+                AvatarDefinedData::class.java
             ) { _, vo ->
                 if (vo.id <= 0) {
                     logger.error("捕获NEW-->READY时，发现avatarNo:{} 没有完成初始化", vo.id)
                     self.tell(PoisonPill.getInstance(), ActorRef.noSender())
                 }
-                logger.info("准备建立连接:{},并挂起, path:{}", vo, self.path())
+                logger.debug("准备建立连接:{},并挂起, path:{}", vo, self.path())
                 nettyClient.connect(vo.id, serverProperties.host, serverProperties.port)
                 stay()
             }.event(
                 ConnectedEvent::class.java,
-                AvatarDefinition::class.java
+                AvatarDefinedData::class.java
             ) { _, vo ->
-                logger.info("已经成功建立连接,并挂起, {}", self.path())
-                goTo(AvatarState.RUNNING).using(vo)
+                logger.debug("已经成功建立连接, 准备进入RUNNING, {}", self.path())
+                goTo(AvatarState.RUNNING).using(AvatarPlayingData(vo.id, vo.name))
             }
         )
 
         `when`(
             AvatarState.RUNNING,
             matchEvent(
-                SuspendEvent::class.java
+                SuspendEvent::class.java,
+                AvatarPlayingData::class.java
             ) { _, vo ->
                 goTo(AvatarState.WAITING).using(vo)
             }
@@ -114,21 +114,14 @@ class AvatarFSM() : AbstractFSM<AvatarState, AvatarData>() {
         onTransition(
             matchState(AvatarState.NEW, AvatarState.READY) { from, to ->
                 val stateData = stateData()
-                if (stateData is AvatarDefinition) {
-//                    if (stateData.id <= 0) {
-//                        logger.error("捕获NEW-->READY时，发现avatarNo:{} 没有完成初始化", stateData.id)
-//                        self.tell(PoisonPill.getInstance(), ActorRef.noSender())
-//                    }
-//                    logger.info("准备建立连接:{}", stateData)
-//                    nettyClient.connect(stateData.id, serverProperties.host, serverProperties.port)
-                }
+//                if (stateData is AvatarDefinition) {
+//                }
             }.state(AvatarState.READY, AvatarState.RUNNING, FI.UnitApplyVoid {
-                val m = UnitMatch.create(matchData(AvatarDefinition::class.java) {
-                    logger.info("成功建立连接:{}", it)
+                val m = UnitMatch.create(matchData(AvatarDefinedData::class.java) {
+                    logger.debug("成功进入RUNNING状态:{}", it)
                 })
                 m.match(stateData())
-            })
-                .state(null, AvatarState.TERMINATED) { from, _ ->
+            }).state(null, AvatarState.TERMINATED) { from, _ ->
                 if (AvatarState.TERMINATED != from) {
                     self.tell(PoisonPill.getInstance(), ActorRef.noSender())
                 }
@@ -161,19 +154,3 @@ class AvatarFSM() : AbstractFSM<AvatarState, AvatarData>() {
     }
 
 }
-
-interface AvatarData
-
-interface AvatarEvent
-
-object SetEvent: AvatarEvent
-
-object TodoEvent : AvatarEvent
-
-object ConnectedEvent : AvatarEvent
-
-object SuspendEvent : AvatarEvent
-
-object Disconnected : AvatarEvent
-
-object ActorStopEvent

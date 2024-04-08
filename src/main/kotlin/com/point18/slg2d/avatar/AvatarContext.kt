@@ -1,8 +1,8 @@
 package com.point18.slg2d.avatar
 
-import com.point18.slg2d.avatar.actor.ActorStopEvent
 import com.point18.slg2d.avatar.event.ActorStopEventBus
 import com.point18.slg2d.avatar.event.StartupEvent
+import com.point18.slg2d.avatar.pojo.ActorStopEvent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationEventPublisher

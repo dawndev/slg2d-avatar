@@ -4,17 +4,17 @@ import akka.actor.ActorRef
 import akka.actor.ActorSelection
 import akka.actor.ActorSystem
 import com.point18.slg2d.avatar.actor.AvatarFSM
-import com.point18.slg2d.avatar.actor.ConnectedEvent
-import com.point18.slg2d.avatar.actor.TodoEvent
 import com.point18.slg2d.avatar.config.AvatarProperties
 import com.point18.slg2d.avatar.extension.Actor
 import com.point18.slg2d.avatar.extension.SpringExtension
+import com.point18.slg2d.avatar.pojo.TodoEvent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationListener
 import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentSkipListSet
 import javax.annotation.PostConstruct
 
 /**
@@ -38,6 +38,9 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     private val actorMap = ConcurrentHashMap<Int, ActorRef>()
+
+    private val actorRegisteredIds = ConcurrentSkipListSet<Int>()
+    private val actorConnectedIds = ConcurrentSkipListSet<Int>()
 
     private lateinit var actorBeanName: String
 
@@ -85,16 +88,15 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
         return springExtension.actorOf(actorSystem, actorBeanName, actorName)
     }
 
-    fun tellActor(no: Int, any: Any): Boolean {
-        val actorRef = this.actorMap[no]
-            ?: return false
-        actorRef.tell(any, ActorRef.noSender())
-        return true
-    }
+//    fun tellActor(no: Int, any: Any): Boolean {
+//        val actorRef = this.actorMap[no]
+//            ?: return false
+//        actorRef.tell(any, ActorRef.noSender())
+//        return true
+//    }
 
-    fun tellActor2(no: Int, any: Any): Boolean {
+    fun tellActor(no: Int, any: Any) {
         val selection: ActorSelection = actorSystem.actorSelection("user/$actorNamePrefix-$no")
-        selection.tell(ConnectedEvent, ActorRef.noSender())
-        return true
+        selection.tell(any, ActorRef.noSender())
     }
 }
