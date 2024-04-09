@@ -1,12 +1,19 @@
 package com.point18.slg2d.avatar.pojo
 
+import com.point18.slg2d.avatar.constg.AvatarId
+import io.netty.channel.Channel
+
 interface AvatarEvent
 
-object SetEvent: AvatarEvent
+data class DefineEvent(
+    val id: AvatarId
+): AvatarEvent
 
-object TodoEvent : AvatarEvent
+object PingEvent : AvatarEvent
 
-object ConnectedEvent : AvatarEvent
+data class ConnectedEvent(
+    val channel: Channel
+) : AvatarEvent
 
 object SuspendEvent : AvatarEvent
 

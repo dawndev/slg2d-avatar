@@ -1,5 +1,6 @@
 package com.point18.slg2d.avatar.net.handler
 
+import com.point18.slg2d.avatar.constg.AvatarId
 import com.point18.slg2d.avatar.event.AvatarRegisterHandler
 import com.point18.slg2d.avatar.exception.ChannelAttrException
 import com.point18.slg2d.common.netmsg.C2SMsg
@@ -11,6 +12,7 @@ import com.point18.slg2d.avatar.pojo.AvatarPlayingData
 import com.point18.slg2d.avatar.pojo.ConnectedEvent
 import com.point18.slg2d.avatar.pojo.Disconnected
 import com.point18.slg2d.avatar.util.ApplicationContextProvider
+import io.netty.channel.Channel
 import org.slf4j.LoggerFactory
 import java.util.Optional
 import java.util.concurrent.TimeUnit
@@ -26,8 +28,8 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
             ?: throw ChannelAttrException()
 
         // 给指定actor发送通知
-        logger.debug("客户端收到channel激活通知，通知actor:${avatarId}")
-        avatarId.noticeAvatarConnected()
+        logger.debug("客户端收到channel激活通知，通知actor:{}", avatarId)
+        ctx.channel() connect avatarId
     }
 
     override fun channelRead0(ctx: ChannelHandlerContext, msg: C2SMsg) {
@@ -37,19 +39,19 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
     @Deprecated("Deprecated in Java")
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
         if (cause is ChannelAttrException) {
-            Optional.ofNullable(ctx.getAvatarId()).ifPresentOrElse({ robotNo ->
-                logger.info("第一次尝试重新获取成功~:${robotNo}")
-                robotNo.noticeAvatarConnected()
+            Optional.ofNullable(ctx.getAvatarId()).ifPresentOrElse({ avatarId ->
+                logger.info("第一次尝试重新获取成功~:actor:{}", avatarId)
+                ctx.channel() connect avatarId
             }) {
                 logger.info("第一次尝试重新获取失败，注册一个定时任务")
                 ctx.channel().eventLoop().schedule({
-                    val robotNo = ctx.getAvatarId()
-                    logger.info("第二次尝试重新获取结果:${robotNo}")
-                    if (robotNo == null) {
+                    val avatarId = ctx.getAvatarId()
+                    logger.info("第二次尝试重新获取结果:{}", avatarId)
+                    if (avatarId == null) {
                         logger.error("第二次依旧获取失败~")
                         ctx.close()
                     } else {
-                        robotNo.noticeAvatarConnected()
+                        ctx.channel() connect avatarId
                     }
 
                 }, 1, TimeUnit.SECONDS)
@@ -66,26 +68,23 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
 
         ctx.getAvatarId()?.let { no ->
             ApplicationContextProvider.getBean(AvatarRegisterHandler::class.java)?.let {
-                it.tellActor(no, Disconnected)
+                it.tellAvatarById(no, Disconnected)
             }
         }
     }
 
-
-    private fun Int.noticeAvatarConnected() {
-        ApplicationContextProvider.getBean(AvatarRegisterHandler::class.java)?.let {
-            val rt = it.tellActor(this, ConnectedEvent)
-            logger.debug("客户端收到channel激活通知actor:${this}，结果:$rt")
-        }
+    private infix fun Channel.connect(id: AvatarId) {
+        val handler = ApplicationContextProvider.getBean(AvatarRegisterHandler::class.java)
+        handler?.tellAvatarById(id, ConnectedEvent(this@connect))
     }
 
 
-    private fun ChannelHandlerContext.getAvatarId(): Int? {
+    private fun ChannelHandlerContext.getAvatarId(): AvatarId? {
         return Optional.ofNullable(channel().attr(AVATAR_ID).get()).orElseGet { null }
     }
 
     companion object {
         val sessionKey = AttributeKey.valueOf<AvatarPlayingData>("key")   //定义一个属性，相当于map键值对：key是name，value是ActorRef
-        val AVATAR_ID = AttributeKey.valueOf<Int>("avatar-id") // 客户端编号的 AttributeKey
+        val AVATAR_ID = AttributeKey.valueOf<AvatarId>("avatar-id") // 客户端编号的 AttributeKey
     }
 }

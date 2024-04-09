@@ -1,24 +1,25 @@
 package com.point18.slg2d.avatar.pojo
 
+import com.point18.slg2d.avatar.constg.AvatarId
 import com.point18.slg2d.avatar.constg.Parameter
 
 interface AvatarData {
-    val id: Int
+    val id: AvatarId
     val name: String
 }
 
 class AvatarUndefinedData: AvatarData {
-    override val id: Int = 0
+    override val id: AvatarId = 0
     override val name: String = "undefined"
 }
 
 data class AvatarDefinedData(
-    override val id: Int,
+    override val id: AvatarId,
     override val name: String
 ) : AvatarData
 
 data class AvatarPlayingData(
-    override val id: Int,
+    override val id: AvatarId,
     override val name: String
 ) : AvatarData {
 

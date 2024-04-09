@@ -11,6 +11,7 @@ import com.point18.slg2d.avatar.config.ServerProperties
 import com.point18.slg2d.avatar.constg.AvatarState
 import com.point18.slg2d.avatar.event.ActorStopEventBus
 import com.point18.slg2d.avatar.event.ActorStopEventBus.Companion.ACTOR_STOP_BUS_ALL
+import com.point18.slg2d.avatar.event.AvatarRegisterHandler
 import com.point18.slg2d.avatar.extension.Actor
 import com.point18.slg2d.avatar.net.NettyClient
 import com.point18.slg2d.avatar.pojo.*
@@ -30,6 +31,8 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
     private lateinit var actorStopEventBus: ActorStopEventBus
     @Autowired
     private lateinit var nettyClient: NettyClient
+    @Autowired
+    private lateinit var avatarRegisterHandler: AvatarRegisterHandler
 
     init {
         // starting point
@@ -38,21 +41,22 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
         `when`(
             AvatarState.NEW,
             matchEvent(
-                SetEvent::class.java,
-                AvatarDefinedData::class.java
-            ) { param1, vo ->
-                logger.debug("avatar:{} 准备从NEW切入READY~", vo.id)
-                goTo(AvatarState.READY).using(vo)
-            }.event(Integer::class.java) { robotNo, _ ->
+                DefineEvent::class.java,
+                AvatarUndefinedData::class.java
+            ) { defineVO, vo ->
+                val avatarId = defineVO.id
                 val namePrefix = avatarProperties.nameprefix
-                val robotName = String.format("%s%06d", namePrefix, robotNo)
+                val robotName = String.format("%s%06d", namePrefix, avatarId)
                 if (namePrefix == null) {
-                    logger.error("robotNo: {}, 找不到namePrefix", robotNo)
+                    logger.error("robotNo: {}, 找不到namePrefix", avatarId)
                     stay()
                 } else {
-                    logger.debug("avatar:{} 数据准备完成~", robotNo)
-                    goTo(AvatarState.READY).using(AvatarDefinedData(robotNo.toInt(), robotName))
+                    logger.info("avatar:{} 数据准备完成~", avatarId)
+                    goTo(AvatarState.READY).using(AvatarDefinedData(avatarId, robotName))
                 }
+            }.event(Integer::class.java) { avatarId, _ ->
+                logger.info("这是一种被废弃的event:{}, 现在这样已经不会切换状态了", avatarId)
+                stay()
             }.anyEvent { e, s ->
                 logger.info("avatar:{} NEW阶段不应该收到 {}~", s, e::class.java)
                 stay()
@@ -62,14 +66,14 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
         `when`(
             AvatarState.READY,
             matchEvent(
-                TodoEvent::class.java,
+                PingEvent::class.java,
                 AvatarDefinedData::class.java
             ) { _, vo ->
                 if (vo.id <= 0) {
                     logger.error("捕获NEW-->READY时，发现avatarNo:{} 没有完成初始化", vo.id)
                     self.tell(PoisonPill.getInstance(), ActorRef.noSender())
                 }
-                logger.debug("准备建立连接:{},并挂起, path:{}", vo, self.path())
+                logger.info("准备建立连接:{},并挂起, path:{}", vo, self.path())
                 nettyClient.connect(vo.id, serverProperties.host, serverProperties.port)
                 stay()
             }.event(
@@ -94,7 +98,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
         `when`(
             AvatarState.WAITING,
             matchEvent(
-                TodoEvent::class.java
+                PingEvent::class.java
             ) { _, vo ->
                 goTo(AvatarState.RUNNING).using(vo)
             }
@@ -103,7 +107,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
         `when`(
             AvatarState.TERMINATED,
             matchEvent(
-                TodoEvent::class.java
+                PingEvent::class.java
             ) { event, _ ->
                 logger.error("state:{}, 收到了{}", stateName(), event::class.java)
                 stay()
@@ -118,7 +122,8 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
 //                }
             }.state(AvatarState.READY, AvatarState.RUNNING, FI.UnitApplyVoid {
                 val m = UnitMatch.create(matchData(AvatarDefinedData::class.java) {
-                    logger.debug("成功进入RUNNING状态:{}", it)
+                    avatarRegisterHandler.actorConnectedIds.add(it.id)
+                    logger.info("成功进入RUNNING状态:{}", it)
                 })
                 m.match(stateData())
             }).state(null, AvatarState.TERMINATED) { from, _ ->
