@@ -11,6 +11,7 @@ import com.point18.slg2d.avatar.extension.SpringExtension
 import com.point18.slg2d.avatar.extension.tellWithNoSender
 import com.point18.slg2d.avatar.pojo.DefineEvent
 import com.point18.slg2d.avatar.pojo.PingEvent
+import com.point18.slg2d.avatar.pojo.WaitConnect
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -40,21 +41,22 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     private val actorRegisteredIds = ConcurrentSkipListSet<Int>()
-    val actorConnectedIds = ConcurrentSkipListSet<Int>()
 
-    private lateinit var actorBeanName: String
+    private lateinit var actorFsmBeanName: String
+    private lateinit var avatarKeeper: ActorRef
 
     @PostConstruct
     fun prepareActorBeanName() {
         val annotation = AvatarFSM::class.java.getAnnotation(Actor::class.java)
             ?: throw IllegalArgumentException("AvatarRegisterHandler::获取不到actorBeanName")
-        actorBeanName = annotation.value
+        actorFsmBeanName = annotation.value
 
-        logger.debug("prepareActorBeanName: {}", actorBeanName)
+        logger.debug("prepareActorBeanName: {}", actorFsmBeanName)
     }
 
     override fun onApplicationEvent(event: StartupEvent) {
-        if (!this::actorBeanName.isInitialized) {
+
+        if (!this::actorFsmBeanName.isInitialized) {
             throw IllegalArgumentException("AvatarRegisterHandler::获取不到actorBeanName")
         }
         val totalNum = avatarProperties.totalNum
@@ -71,6 +73,9 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
         }
         logger.info("avatar配置的创建总数量:{}, 实际创建的数量{}~", totalNum, this.actorRegisteredIds.size)
 
+        avatarKeeper = springExtension.actorOf(actorSystem, "avatarKeeper", "avatarKeeper")
+        avatarKeeper.tellWithNoSender(WaitConnect(totalNum))
+
         // 开始运行, 通过selection实例，批量发送消息
         this.tellAllAvatar(PingEvent)
     }
@@ -82,7 +87,7 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
      */
     private fun AvatarId.newActor(action: ActorRef.() -> Unit) {
         val actorName = "$actorNamePrefix-${this@newActor}"
-        val actorOf = springExtension.actorOf(actorSystem, actorBeanName, actorName)
+        val actorOf = springExtension.actorOf(actorSystem, actorFsmBeanName, actorName)
         actorOf.action()
     }
 
@@ -110,5 +115,9 @@ class AvatarRegisterHandler : ApplicationListener<StartupEvent> {
     fun tellAllAvatar(any: Any) {
         val selection: ActorSelection = actorSystem.actorSelection("user/$actorNamePrefix-*")
         selection.tell(any, ActorRef.noSender())
+    }
+
+    fun tellKeeper(any: Any) {
+        this.avatarKeeper.tellWithNoSender(any)
     }
 }

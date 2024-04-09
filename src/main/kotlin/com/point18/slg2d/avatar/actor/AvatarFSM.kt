@@ -122,7 +122,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
 //                }
             }.state(AvatarState.READY, AvatarState.RUNNING, FI.UnitApplyVoid {
                 val m = UnitMatch.create(matchData(AvatarDefinedData::class.java) {
-                    avatarRegisterHandler.actorConnectedIds.add(it.id)
+                    avatarRegisterHandler.tellKeeper(AvatarValid(it.id))
                     logger.info("成功进入RUNNING状态:{}", it)
                 })
                 m.match(stateData())
@@ -136,6 +136,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
 
         whenUnhandled(
             matchEvent(Disconnected::class.java) { msg, data ->
+                avatarRegisterHandler.tellKeeper(AvatarInvalid(data.id))
                 goto(AvatarState.TERMINATED).using(data)
             }.event(ActorStopEvent::class.java) { _, data ->
                 goto(AvatarState.TERMINATED).using(data)
