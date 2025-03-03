@@ -1,20 +1,6 @@
-### …or create a new repository on the command line
-```bash
-echo "# slg2d-avatar" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M master
-git remote add origin git@github.com:tagwan/slg2d-avatar.git
-git push -u origin master
-```
+## slg2d-avatar
 
-### …or push an existing repository from the command line
-```bash
-git remote add origin git@github.com:tagwan/slg2d-avatar.git
-git branch -M master
-git push -u origin master
-```
-
-### …or import code from another repository
-You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
+### 性能验证建议
+- 压力测试：使用Gatling或JMeter模拟万级连接，监控线程数和内存占用。
+- 监控指标：通过Akka的MetricsExtension跟踪Actor邮箱大小和消息处理延迟。
+- JVM参数调优：增加堆外内存（-XX:MaxDirectMemorySize）以支持Netty的Direct Buffer。

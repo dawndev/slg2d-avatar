@@ -74,7 +74,7 @@ class AvatarFSM : AbstractFSM<AvatarState, AvatarData>() {
                     self.tell(PoisonPill.getInstance(), ActorRef.noSender())
                 }
                 logger.info("准备建立连接:{},并挂起, path:{}", vo, self.path())
-                nettyClient.connect(vo.id, serverProperties.host, serverProperties.port)
+                nettyClient.connect(vo.id, self, serverProperties.host, serverProperties.port)
                 stay()
             }.event(
                 ConnectedEvent::class.java,

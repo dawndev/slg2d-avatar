@@ -1,9 +1,15 @@
 package com.point18.slg2d.avatar.net
 
+import akka.actor.ActorRef
+import com.point18.slg2d.avatar.constg.AvatarId
 import com.point18.slg2d.avatar.constg.Parameter
+import com.point18.slg2d.avatar.constg.SharedAttributes
+import com.point18.slg2d.avatar.extension.tellWithNoSender
 import com.point18.slg2d.avatar.net.handler.ClientHandlerInitializer
-import com.point18.slg2d.avatar.net.handler.RobotClientHandler
+import com.point18.slg2d.avatar.pojo.ConnectedEvent
 import io.netty.bootstrap.Bootstrap
+import io.netty.channel.Channel
+import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelOption
 import io.netty.channel.EventLoopGroup
 import io.netty.channel.nio.NioEventLoopGroup
@@ -11,7 +17,7 @@ import io.netty.channel.socket.nio.NioSocketChannel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import java.lang.IllegalArgumentException
+import java.util.concurrent.ConcurrentHashMap
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
@@ -23,6 +29,9 @@ class NettyClient {
 
     private val group: EventLoopGroup = NioEventLoopGroup()
     private val bootstrap: Bootstrap = Bootstrap()
+
+    // 客户端状态管理Map
+    val clientRegistry = ConcurrentHashMap<AvatarId, Channel>()
 
     /**
      * netty引导
@@ -62,38 +71,16 @@ class NettyClient {
         nettyFuture.await()
     }
 
-    fun connect(clientId: Int, serverHost: String?, serverPort: Int?) {
-        if (serverHost == null || serverPort == null) {
-            throw IllegalArgumentException("NettyClient::connect参数发生异常,serverHost:$serverHost, serverPort:$serverPort")
-        }
+    fun connect(clientId: AvatarId, actorRef: ActorRef, serverHost: String?, serverPort: Int?) {
 
-//        // 连接到服务器
-//        val future = this.bootstrap.connect(serverHost, serverPort).sync()
-//
-//        // 获取 Channel，并设置附加信息
-//        val channel = future.channel()
-//        channel.attr(RobotClientHandler.CLIENT_ID).set(clientId.toString())
-//
-//        // 等待连接关闭
-//        channel.closeFuture().sync()
-
-        // 连接到服务器
-        val future = this.bootstrap.connect(serverHost, serverPort)
-
-        // 获取 Channel，并设置附加信息
-        val channel = future.channel()
-        channel.attr(RobotClientHandler.AVATAR_ID).set(clientId)
-
-        // 注册连接关闭的回调
-        future.addListener { closeFuture ->
-            if (closeFuture.isSuccess) {
-                // 连接成功关闭
-                // 这里可以进行连接关闭后的处理逻辑
-            } else {
-                // 连接关闭异常
-                val cause = closeFuture.cause()
-                // 这里可以处理连接关闭异常
+        bootstrap.connect(requireNotNull(serverHost), requireNotNull(serverPort)).addListener(ChannelFutureListener { future ->
+            // 获取 Channel，并设置附加信息
+            if (future.isSuccess) {
+                val channel = future.channel()
+                channel.attr(SharedAttributes.AVATAR_ID).set(clientId)
+                channel.attr(SharedAttributes.ACTOR_REF_KEY).set(actorRef)
+                this.clientRegistry[clientId] = channel
             }
-        }
+        })
     }
 }
