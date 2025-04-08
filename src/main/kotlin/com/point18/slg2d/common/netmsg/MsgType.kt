@@ -25,7 +25,9 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     CheckWord_6(6, CheckWord.getDefaultInstance(), CheckWordRt.getDefaultInstance()), // 检测屏蔽字
     LoginSDKBindInfo_7(7, LoginSDKBindInfo.getDefaultInstance(), LoginSDKBindInfoRt.getDefaultInstance()), // 登录SDK绑定信息
     LoginSDKBinding_8(8, LoginSDKBinding.getDefaultInstance(), LoginSDKBindingRt.getDefaultInstance()), // 绑定登录SDK
+    ClearPaySuccessNotice_9(9, ClearPaySuccessNotice.getDefaultInstance(), ClearPaySuccessNoticeRt.getDefaultInstance()),  // 已打点，清除支付成功通知
 
+    // important 协议号14 WebLogin / WebLoginRt 的相关对象有其他地方调用，不要用
     Walk_15(15, Walk.getDefaultInstance(), WalkRt.getDefaultInstance()), // 部队行军
     PersonalPower_17(17, PersonalPower.getDefaultInstance(), PersonalPowerRt.getDefaultInstance()), // 查询个人势力
 
@@ -35,6 +37,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     DelMark_20(20, DelMark.getDefaultInstance(), DelMarkRt.getDefaultInstance()), // 删除土地收藏
     ServerTime_21(21, FetchServerTime.getDefaultInstance(), FetchServerTimeRt.getDefaultInstance()), // 服务器时间
     SearchMapCell_24(24, SearchMapCell.getDefaultInstance(), SearchMapCellRt.getDefaultInstance()), // 找离我最近的指定等级的地块
+    FetchVersion_25(25, FetchVersion.getDefaultInstance(), FetchVersionRt.getDefaultInstance()), // 获取配置版本信息
     CheckPlayerName_26(26, CheckPlayerName.getDefaultInstance(), CheckPlayerNameRt.getDefaultInstance()), // 实时检测改名
     ChangePlayerName_27(27, ChangePlayerName.getDefaultInstance(), ChangePlayerNameRt.getDefaultInstance()), // 改名
     BatchPlayerSimpleInfoQuery_29(
@@ -52,6 +55,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         MerchantShipExchangeRt.getDefaultInstance()
     ), // 商船兑换
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     ShowMap_40(40, ShowMap.getDefaultInstance(), ShowMapRt.getDefaultInstance()), // 大地图外观显示
     QueryCastleDefInfo_41(
         41,
@@ -142,6 +146,11 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         InnerCityDecorationObjPackUp.getDefaultInstance(),
         InnerCityDecorationObjPackUpRt.getDefaultInstance()
     ),
+    LayoutFunctionOpen_72(
+        72,
+        LayoutFunctionOpen.getDefaultInstance(),
+        LayoutFunctionOpenRt.getDefaultInstance()
+    ), //布局功能开启
     HeroAppointAppoint_81(
         81,
         HeroAppointAppoint.getDefaultInstance(),
@@ -167,7 +176,12 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         LuckyDiscountShopBuy.getDefaultInstance(),
         LuckyDiscountShopBuyRt.getDefaultInstance()
     ), // 幸运折扣商店购买
-
+    QuerySpecialReportInfo_102(
+        102,
+        QuerySpecialReportInfo.getDefaultInstance(),
+        QuerySpecialReportInfoRt.getDefaultInstance()
+    ), // 详细战报请求
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     TestSlgFight_103(103, TestSlgFight.getDefaultInstance(), TestSlgFightRt.getDefaultInstance()), // 测试战斗
     GetDetailFightInfo_104(
         104,
@@ -216,6 +230,24 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         AllianceJourneyDraw.getDefaultInstance(),
         AllianceJourneyDrawRt.getDefaultInstance()
     ), // 盟主征途大奖领取
+
+    EnterOperation_150(150, EnterOperation.getDefaultInstance(), EnterOperationRt.getDefaultInstance()),
+    OperationExcavate_151(151, OperationExcavate.getDefaultInstance(), OperationExcavateRt.getDefaultInstance()),
+    OperationExhibitionWarehouseOpt_152(152, OperationExhibitionWarehouseOpt.getDefaultInstance(), OperationExhibitionWarehouseOptRt.getDefaultInstance()),
+    OperationSoilLayerQuery_153(153, OperationSoilLayerQuery.getDefaultInstance(), OperationSoilLayerQueryRt.getDefaultInstance()),
+    OperationLabour_154(154, OperationLabour.getDefaultInstance(), OperationLabourRt.getDefaultInstance()),
+    OperationMuseumInfoQuery_155(155, OperationMuseumInfoQuery.getDefaultInstance(), OperationMuseumInfoQueryRt.getDefaultInstance()),
+    OperationMuseumOpt_156(156, OperationMuseumOpt.getDefaultInstance(), OperationMuseumOptRt.getDefaultInstance()),
+    OperationExcavateBalance_158(158, OperationExcavateBalance.getDefaultInstance(), OperationExcavateBalanceRt.getDefaultInstance()),
+    OperationExcavateContract_159(159, OperationExcavateContract.getDefaultInstance(), OperationExcavateContractRt.getDefaultInstance()),
+    OperationBookOpt_160(160, OperationBookOpt.getDefaultInstance(), OperationBookOptRt.getDefaultInstance()),
+    OperationBeginnerGuide_161(161, OperationBeginnerGuide.getDefaultInstance(), OperationBeginnerGuideRt.getDefaultInstance()),
+    OperationDirectExcavateOpen_162(162, OperationDirectExcavateOpen.getDefaultInstance(), OperationDirectExcavateOpenRt.getDefaultInstance()),
+    OperationDirectExcavateBalance_163(163, OperationDirectExcavateBalance.getDefaultInstance(), OperationDirectExcavateBalanceRt.getDefaultInstance()),
+    OperationMissionTrigger_164(164, OperationMissionTrigger.getDefaultInstance(), OperationMissionTriggerRt.getDefaultInstance()),
+    OperationTransportTeam_165(165, OperationTransportTeam.getDefaultInstance(), OperationTransportTeamRt.getDefaultInstance()),
+    OperationTransportSlot_166(166, OperationTransportSlot.getDefaultInstance(), OperationTransportSlotRt.getDefaultInstance()),
+    OperationUseProp_167(167, OperationUseProp.getDefaultInstance(), OperationUsePropRt.getDefaultInstance()),
 
     ItemCompound_183(183, ItemCompound.getDefaultInstance(), ItemCompoundRt.getDefaultInstance()), // 合成道具
 
@@ -324,6 +356,9 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         QuerySlgDetailOnRank.getDefaultInstance(),
         QuerySlgDetailOnRankRt.getDefaultInstance()
     ), // 排行榜中的slg战斗信息
+    QueryBattlefieldRankFirst_507(507, QueryBattlefieldRankFirst.getDefaultInstance(), QueryBattlefieldRankFirstRt.getDefaultInstance()),
+    QueryBattlefieldPersonalRank_508(508, QueryBattlefieldPersonalRank.getDefaultInstance(), QueryBattlefieldPersonalRankRt.getDefaultInstance()),
+    QueryBattlefieldAllianceRank_509(509, QueryBattlefieldAllianceRank.getDefaultInstance(), QueryBattlefieldAllianceRankRt.getDefaultInstance()),
     SignQuery_510(
         510,
         SignQuery.getDefaultInstance(),
@@ -341,7 +376,11 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         SignDrawBox.getDefaultInstance(),
         SignDrawBoxRt.getDefaultInstance()
     ),// 领取累计签到宝箱
-
+    QueryPurchaseActivityLimitRank_513(
+        513,
+        QueryPurchaseActivityLimitRank.getDefaultInstance(),
+        QueryPurchaseActivityLimitRankRt.getDefaultInstance()
+    ), //查询活动限定的排行
     RebirthPalaceQuery_610(  // 大圣堂查询
         610,
         RebirthPalaceQuery.getDefaultInstance(),
@@ -405,31 +444,8 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         HandleFriendApplyRt.getDefaultInstance()
     ), // 忽略别人的添加好友请求
 
-    // 竞技场
-    JjcQueryInfo_711(711, JjcQueryInfo.getDefaultInstance(), JjcQueryInfoRt.getDefaultInstance()), // 查询竞技场
-    JjcRefreshChallenge_712(
-        712,
-        JjcRefreshChallenge.getDefaultInstance(),
-        JjcRefreshChallengeRt.getDefaultInstance()
-    ), // 刷新竞技场挑战对手
-    JjcGetRewards_714(714, JjcGetRewards.getDefaultInstance(), JjcGetRewardsRt.getDefaultInstance()), // 领取奖励
-    GetTimeReward_718(718, GetTimeReward.getDefaultInstance(), GetTimeRewardRt.getDefaultInstance()), // 领取累计时间奖励
-    BeginJjcFight_719(719, BeginJjcFight.getDefaultInstance(), BeginJjcFightRt.getDefaultInstance()), // 竞技场开始战斗
-    JjcFight_720(720, JjcFight.getDefaultInstance(), JjcFightRt.getDefaultInstance()), // 竞技场战斗
-    BuyJjcCount_722(722, BuyJjcCount.getDefaultInstance(), BuyJjcCountRt.getDefaultInstance()), // 购买竞技场挑战次数
-    SelectJjcAtkForce_724(
-        724,
-        SelectJjcDefForce.getDefaultInstance(),
-        SelectJjcDefForceRt.getDefaultInstance()
-    ), // 查询某玩家竞技场防守阵容
-    GetRankGold_725(725, GetRankGold.getDefaultInstance(), GetRankGoldRt.getDefaultInstance()), // 领取排名累计奖励
-    QueryJjcShopInfo_726(726, GetJjcShopInfo.getDefaultInstance(), GetJjcShopInfoRt.getDefaultInstance()), // 查询jjc商店
-    BuyJjcShopItem_727(727, BuyJjcItem.getDefaultInstance(), BuyJjcItemRt.getDefaultInstance()), // 购买竞技场商店的东西
-    RefreshJjcShopItem_728(
-        728,
-        RefreshJjcShopItem.getDefaultInstance(),
-        RefreshJjcShopItemRt.getDefaultInstance()
-    ), // 刷新竞技场商店的东西
+    SurpriseActivityQuery_731(731, SurpriseActivityQuery.getDefaultInstance(), SurpriseActivityQueryRt.getDefaultInstance()),
+    SurpriseActivityOpt_732(732, SurpriseActivityOpt.getDefaultInstance(), SurpriseActivityOptRt.getDefaultInstance()),
 
     // 获取每天vip奖励
     GainVipDayReward_740(
@@ -450,8 +466,10 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         RewardVipDayReward.getDefaultInstance(),
         RewardVipDayRewardRt.getDefaultInstance()
     ), // 领取每日VIP经验
+    DisappearTalentOpt_751(751, DisappearTalentOpt.getDefaultInstance(), DisappearTalentOptRt.getDefaultInstance()),
+    DisappearBuildingQuery_752(752, DisappearBuildingQuery.getDefaultInstance(), DisappearBuildingQueryRt.getDefaultInstance()),
+    DisappearBuildingOpt_753(753, DisappearBuildingOpt.getDefaultInstance(), DisappearBuildingOptRt.getDefaultInstance()),
 
-    RadarSearch_780(780, RadarSearch.getDefaultInstance(), RadarSearchRt.getDefaultInstance()), // 雷达搜索
     RadarSearchOpen_781(781, RadarSearchOpen.getDefaultInstance(), RadarSearchOpenRt.getDefaultInstance()), // 雷达搜索
     RadarTaskVerify_782(782, RadarTaskVerify.getDefaultInstance(), RadarTaskVerifyRt.getDefaultInstance()), // 雷达任务验证
 
@@ -460,6 +478,8 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         RadarTaskDraw.getDefaultInstance(),
         RadarTaskDrawRt.getDefaultInstance()
     ), // 领取雷达任务奖励
+
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     RadarStrengthTaskDraw_787(
         787,
         RadarStrengthTaskDraw.getDefaultInstance(),
@@ -467,6 +487,42 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ), // 领取雷达示例验证任务奖励
     RadarUpgrade_788(788, RadarUpgrade.getDefaultInstance(), RadarUpgradeRt.getDefaultInstance()),
     RadarTaskComplete_789(789, RadarTaskComplete.getDefaultInstance(), RadarTaskCompleteRt.getDefaultInstance()),
+    RadarDoubleRewardChangeSwitch_790(
+        790,
+        RadarDoubleRewardChangeSwitch.getDefaultInstance(),
+        RadarDoubleRewardChangeSwitchRt.getDefaultInstance()
+    ),//雷达双倍任务奖励开关
+
+    GetFossilHunterData_791(791, GetFossilHunterData.getDefaultInstance(), GetFossilHunterDataRt.getDefaultInstance()),
+    ReceiveFossilHunterReward_792(
+        792,
+        ReceiveFossilHunterReward.getDefaultInstance(),
+        ReceiveFossilHunterRewardRt.getDefaultInstance()
+    ),
+    FossilHunterUnlockGroup_793(
+        793,
+        FossilHunterUnlockGroup.getDefaultInstance(),
+        FossilHunterUnlockGroupRt.getDefaultInstance()
+    ),
+
+    SlotBet_794(794, SlotBet.getDefaultInstance(), SlotBetRt.getDefaultInstance()), // 扭蛋轰隆隆抽奖
+    SlotActivityQuery_795(
+        795,
+        SlotActivityQuery.getDefaultInstance(),
+        SlotActivityQueryRt.getDefaultInstance()
+    ),  // 扭蛋轰隆隆活动查询
+    SlotShopBuy_796(796, SlotShopBuy.getDefaultInstance(), SlotShopBuyRt.getDefaultInstance()), // 扭蛋轰隆隆商店购买
+    ReceiveSlotShareReward_797(
+        797,
+        ReceiveSlotShareReward.getDefaultInstance(),
+        ReceiveSlotShareRewardRt.getDefaultInstance()
+    ), // 扭蛋轰隆隆领取瓜分奖励
+    RadarTaskSweep_798(798, RadarTaskSweep.getDefaultInstance(), RadarTaskSweepRt.getDefaultInstance()),//雷达扫荡
+    GetRadarDoubleRewardInfo_799(
+        799,
+        GetRadarDoubleRewardInfo.getDefaultInstance(),
+        GetRadarDoubleRewardInfoRt.getDefaultInstance()
+    ),//雷达双倍奖励信息
 
     AllianceCreate_802(802, AllianceCreate.getDefaultInstance(), AllianceCreateRt.getDefaultInstance()), // 联盟创建
 
@@ -542,6 +598,8 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         SetAllianceFollowRt.getDefaultInstance()
     ), // 设置跟随状态 不用传参数来 直接取反
     AllianceQueryLog_820(820, AllianceQueryLog.getDefaultInstance(), AllianceQueryLogRt.getDefaultInstance()), // 查询联盟日志
+    QueryAllianceDescptHistory_821(821, QueryAllianceDescptHistory.getDefaultInstance(), QueryAllianceDescptHistoryRt.getDefaultInstance()),
+
     AllianceSetApplyPower_822(
         822,
         AllianceSetApplyPower.getDefaultInstance(),
@@ -568,11 +626,19 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         DeleteApplyAllianceOfficer.getDefaultInstance(),
         DeleteApplyAllianceOfficerRt.getDefaultInstance()
     ), // 删除一条申请职位记录
+
+    ReceivePayLifetimeCardReward_827(
+        827,
+        ReceivePayLifetimeCardReward.getDefaultInstance(),
+        ReceivePayLifetimeCardRewardRt.getDefaultInstance()
+    ), // 领取终身卡奖励
+
     AllianceRecallPos_835(
         835,
         AllianceRecallPos.getDefaultInstance(),
         AllianceRecallPosRt.getDefaultInstance()
     ), // 罢免玩家帮派职位
+    AlliancePropertyWaive_836(836, AlliancePropertyWaive.getDefaultInstance(), AlliancePropertyWaiveRt.getDefaultInstance()),
     AllianceSetFlag_837(837, AllianceSetFlag.getDefaultInstance(), AllianceSetFlagRt.getDefaultInstance()), // 设置联盟旗帜
     QueryApplyAllianceList_838(
         838,
@@ -591,6 +657,33 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         CleanrAllianceApplyList.getDefaultInstance(),
         CleanrAllianceApplyListRt.getDefaultInstance()
     ), // 检测是否拥有联盟 并且清除他的申请记录 用于进入销号冷静期
+
+    //根据条件筛选出一个符合条件的联盟信息
+    GetRecommendationAllianceInfo_841(
+        841,
+        GetRecommendationAllianceInfo.getDefaultInstance(),
+        GetRecommendationAllianceInfoRt.getDefaultInstance()
+    ),
+    //联盟福利支援礼包846-850
+    //购买联盟福利支援礼包
+    BuyAllianceGiftSupportBox_846(
+        846,
+        BuyAllianceGiftSupportBox.getDefaultInstance(),
+        BuyAllianceGiftSupportBoxRt.getDefaultInstance()
+    ),
+    //联盟福利支援礼包信息查询
+    QueryAllianceGiftSupportBoxInfo_847(
+        847,
+        QueryAllianceGiftSupportBoxInfo.getDefaultInstance(),
+        QueryAllianceGiftSupportBoxInfoRt.getDefaultInstance()
+    ),
+
+    // 设置联盟自动踢人条件
+    SetAllianceAutoRemovePlayer_848(
+        848,
+        SetAllianceAutoRemovePlayer.getDefaultInstance(),
+        SetAllianceAutoRemovePlayerRt.getDefaultInstance()
+    ),
 
     AllianceOpenWaijiao_895(
         895,
@@ -796,15 +889,32 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         QueryAllianceCompetitionTask.getDefaultInstance(),
         QueryAllianceCompetitionTaskRt.getDefaultInstance()
     ),
+
     ReceiveAllAllianceCmpttReward_943(
         943,
         ReceiveAllAllianceCmpttReward.getDefaultInstance(),
         ReceiveAllAllianceCmpttRewardRt.getDefaultInstance()
     ),
+
+    RefreshAllianceCompetitionQuest_944(
+        944,
+        RefreshAllianceCompetitionQuest.getDefaultInstance(),
+        RefreshAllianceCompetitionQuestRt.getDefaultInstance()
+    ),
+    AllianceSpeakProcess_945(
+        945,
+        AllianceSpeakProcess.getDefaultInstance(),
+        AllianceSpeakProcessRt.getDefaultInstance()
+    ),
     QueryAllianceCompetitionRank_952(
         952,
         QueryAllianceCompetitionRank.getDefaultInstance(),
         QueryAllianceCompetitionRankRt.getDefaultInstance()
+    ),
+    QueryDinosaurHuntingEffect_953(
+        953,
+        QueryDinosaurHuntingEffect.getDefaultInstance(),
+        QueryDinosaurHuntingEffectRt.getDefaultInstance()
     ),
 
     BeginEliminateFight_1000(
@@ -815,6 +925,8 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     EndEliminateFight_1001(1001, EndEliminateFight.getDefaultInstance(), EndEliminateFightRt.getDefaultInstance()),
 
     UpdateMainHero_1006(1006, UpdateMainHero.getDefaultInstance(), UpdateMainHeroRt.getDefaultInstance()), // 更换领主
+    QueryHeroCarryNum_1007(1007, QueryHeroCarryNum.getDefaultInstance(), QueryHeroCarryNumRt.getDefaultInstance()),
+    QueryHeroPower_1008(1008, QueryHeroPower.getDefaultInstance(), QueryHeroPowerRt.getDefaultInstance()),
 
     // (英雄无敌版)武将养成 1011-1020
     HeroLvUp_1011(1011, InvincibleHeroLvUp.getDefaultInstance(), InvincibleHeroLvUpRt.getDefaultInstance()), // 武将升级
@@ -886,6 +998,18 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     //英雄消耗道具升级
     HeroLvUpgrade_1030(1030, HeroLvUpgrade.getDefaultInstance(), HeroLvUpgradeRt.getDefaultInstance()),
 
+    //链接英雄
+    LinkHero_1031(1031, LinkHero.getDefaultInstance(), LinkHeroRt.getDefaultInstance()),
+    //链接英雄断开
+    BreakLinkHero_1032(1032, BreakLinkHero.getDefaultInstance(), BreakLinkHeroRt.getDefaultInstance()),
+    //链接英雄万能碎片兑换
+    LinkHeroFragmentExchange_1033(
+        1033,
+        LinkHeroFragmentExchange.getDefaultInstance(),
+        LinkHeroFragmentExchangeRt.getDefaultInstance()
+    ),
+    //链接英雄升星
+    LinkHeroStarLvUp_1034(1034, LinkHeroStarLvUp.getDefaultInstance(), LinkHeroStarLvUpRt.getDefaultInstance()),
 
     // 科技 1051-1060
     ResearchLvUp_1051(1051, ResearchLvUp.getDefaultInstance(), ResearchLvUpRt.getDefaultInstance()), // 升级科技
@@ -992,6 +1116,15 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         LordEquipStrength.getDefaultInstance(),
         LordEquipStrengthRt.getDefaultInstance()
     ), // 领主装备强化
+    //领主等级一键升级预览
+    LordOneClickLvUpgradePreview_1248(
+        1248,
+        LordOneClickLvUpgradePreview.getDefaultInstance(),
+        LordOneClickLvUpgradePreviewRt.getDefaultInstance()
+    ),
+
+    //领主等级一键升级应用
+    LordOneClickLvUpgrade_1249(1249, LordOneClickLvUpgrade.getDefaultInstance(), LordOneClickLvUpgradeRt.getDefaultInstance()),
 
     // 战斗相关 1251-1299
     WatchWalkGroup_1251(1251, WatchWalkGroup.getDefaultInstance(), WatchWalkGroupRt.getDefaultInstance()),  // 查看行军组
@@ -1046,13 +1179,19 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         CheckAllianceAreaRt.getDefaultInstance()
     ), // 检测是否自己的联盟领地
 
-    // Cp爬塔 1290 - 1299
+    // Cp爬塔 1280 - 1299
+    CpTowerCheckDailyReward_1280(1280, CpTowerCheckDailyReward.getDefaultInstance(), CpTowerCheckDailyRewardRt.getDefaultInstance()), // Cp查询每日奖励
+    CpTowerAcceptDailyReward_1281(1281, CpTowerAcceptDailyReward.getDefaultInstance(), CpTowerAcceptDailyRewardRt.getDefaultInstance()), // Cp领取每日奖励
+    CpTowerCheckHangUpReward_1282(1282, CpTowerCheckHangUpReward.getDefaultInstance(), CpTowerCheckHangUpRewardRt.getDefaultInstance()), // Cp爬塔查看挂机奖励
+    CpTowerAcceptHangUpReward_1283(1283, CpTowerAcceptHangUpReward.getDefaultInstance(), CpTowerAcceptHangUpRewardRt.getDefaultInstance() ), // Cp爬塔领取挂机奖励
     CheckCpTower_1290(1290, CheckCpTower.getDefaultInstance(), CheckCpTowerRt.getDefaultInstance()), // Cp爬塔信息查询
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CpTowerStartFight_1291(
         1291,
         CpTowerStartFight.getDefaultInstance(),
         CpTowerStartFightRt.getDefaultInstance()
     ),// Cp爬塔开始战斗
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CpTowerFinishFight_1292(
         1292,
         CpTowerFinishFight.getDefaultInstance(),
@@ -1063,21 +1202,25 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         CpTowerQuickPass.getDefaultInstance(),
         CpTowerQuickPassRt.getDefaultInstance()
     ), // Cp爬塔一键通关
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CpTowerDrawOutputRes_1294(
         1294,
         CpTowerDrawOutputRes.getDefaultInstance(),
         CpTowerDrawOutputResRt.getDefaultInstance()
     ), // Cp爬塔挂机奖励领取
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CpTowerDrawStarReward_1295(
         1295,
         CpTowerDrawStarReward.getDefaultInstance(),
         CpTowerDrawStarRewardRt.getDefaultInstance()
     ), // Cp爬塔累积星级奖励领取
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CpTowerSweep_1296(
         1296,
         CpTowerSweep.getDefaultInstance(),
         CpTowerSweepRt.getDefaultInstance()
     ), // Cp爬塔满星扫荡
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CpQuickAfk_1297(
         1297,
         CpQuickAfk.getDefaultInstance(),
@@ -1171,6 +1314,64 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         RandomEventFortuneDrawRt.getDefaultInstance()
     ), // 内城随机事件领取天降鸿运奖励
 
+    // 英雄部件操作 装备 脱下
+    HeroComponentOpt_1356(
+        1356,
+        HeroComponentOpt.getDefaultInstance(),
+        HeroComponentOptRt.getDefaultInstance()
+    ),
+
+    // 英雄部件升级 强化 重铸
+    HeroComponentLvUp_1357(
+        1357,
+        HeroComponentLvUp.getDefaultInstance(),
+        HeroComponentLvUpRt.getDefaultInstance()
+    ),
+
+    // 获取捕鱼的数据
+    QueryDinoFishingData_1358(
+        1358,
+        QueryDinoFishingData.getDefaultInstance(),
+        QueryDinoFishingDataRt.getDefaultInstance()
+    ),
+
+    //  捕鱼领奖
+    ReceiveDinoFishingReward_1359(
+        1359,
+        ReceiveDinoFishingReward.getDefaultInstance(),
+        ReceiveDinoFishingRewardRt.getDefaultInstance()
+    ),
+
+    //  捕鱼活动数据
+    QueryDinoFishingActivityData_1360(
+        1360,
+        QueryDinoFishingActivityData.getDefaultInstance(),
+        QueryDinoFishingActivityDataRt.getDefaultInstance()
+    ),
+
+    //  获取量子实验室数据
+    QueryQuantumLaboratoryData_1361(
+        1361,
+        QueryQuantumLaboratoryData.getDefaultInstance(),
+        QueryQuantumLaboratoryDataRt.getDefaultInstance()
+    ),
+
+    //  获取量子实验室数据
+    QuantumLaboratoryTransform_1362(
+        1362,
+        QuantumLaboratoryTransform.getDefaultInstance(),
+        QuantumLaboratoryTransformRt.getDefaultInstance()
+    ),
+
+    //  获取量子实验室数据
+    ReceiveQuantumLaboratoryRangeReward_1363(
+        1363,
+        ReceiveQuantumLaboratoryRangeReward.getDefaultInstance(),
+        ReceiveQuantumLaboratoryRangeRewardRt.getDefaultInstance()
+    ),
+    HeroGearLvUp_1364(1364, HeroGearLvUp.getDefaultInstance(), HeroGearLvUpRt.getDefaultInstance()),
+    HeroGearEquip_1365(1365, HeroGearEquip.getDefaultInstance(), HeroGearEquipRt.getDefaultInstance()),
+    QueryHeroGear_1366(1366, QueryHeroGear.getDefaultInstance(), QueryHeroGearRt.getDefaultInstance()),
 
     // 在线礼包消息号 1401 - 1410
     GetOnlineReward_1401(1401, GetOnlineReward.getDefaultInstance(), GetOnlineRewardRt.getDefaultInstance()), // 领取在线礼包
@@ -1217,6 +1418,11 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         GetTimintReward.getDefaultInstance(),
         GetTimintRewardRt.getDefaultInstance()
     ),
+    UnlockAppreciationStep_1410(
+        1410,
+        UnlockAppreciationStep.getDefaultInstance(),
+        UnlockAppreciationStepRt.getDefaultInstance()
+    ), // 犒赏令解锁档位奖励
 
     GetMonthReward_1424(
         1424,
@@ -1224,42 +1430,57 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         GetMonthRewardRt.getDefaultInstance()
     ),// 领取月卡每日奖励
 
+    GetClubCardInfos_1425(
+        1425,
+        GetClubCardInfos.getDefaultInstance(),
+        GetClubCardInfosRt.getDefaultInstance()
+    ),// 获取玩家拥有和可购买的礼品信息
+
     // 巨龙探索：1430-1440,1433-1436挂机
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     ClimbTowerQueryInfos_1430(
         1430,
         ClimbTowerQueryInfos.getDefaultInstance(),
         ClimbTowerQueryInfosRt.getDefaultInstance()
     ), // 爬塔信息查询
+
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     ClimbTowerBattleStart_1431(
         1431,
         ClimbTowerBattleStart.getDefaultInstance(),
         ClimbTowerBattleStartRt.getDefaultInstance()
     ), // 爬塔三消战斗开始
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     ClimbTowerBattleEnd_1432(
         1432,
         ClimbTowerBattleEnd.getDefaultInstance(),
         ClimbTowerBattleEndRt.getDefaultInstance()
     ),// 爬塔三消战斗结束
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     AfkQueryOrSetBattleArray_1433(
         1433, AfkQueryOrSetBattleArray.getDefaultInstance(),
         AfkQueryOrSetBattleArrayRt.getDefaultInstance()
     ), // 挂机阵容查询或者设置
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     AfkQueryAllRewards_1434(
         1434,
         AfkQueryAllRewards.getDefaultInstance(),
         AfkQueryAllRewardsRt.getDefaultInstance()
     ), // 查询挂机全部奖励
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     AfkGetReward_1435(
         1435,
         AfkGetReward.getDefaultInstance(),
         AfkGetRewardRt.getDefaultInstance()
 
     ), // 挂机奖励领取
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     AfkQueryOrSetLevel_1436(
         1436,
         AfkQueryOrSetLevel.getDefaultInstance(),
         AfkQueryOrSetLevelRt.getDefaultInstance()
     ),// 查询或设置挂机关卡
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     ClimbTowerChapterRewardGet_1438(
         1438,
         ClimbTowerChapterRewardGet.getDefaultInstance(),
@@ -1286,11 +1507,13 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ), // 领取自定义活动每日免费礼包
 
     // 国王官职消息 1455 - 1469
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     SetCountryPosition_1455(
         1455,
         SetCountryPosition.getDefaultInstance(),
         SetCountryPositionRt.getDefaultInstance()
     ), // 设置国家官职
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     AwardAlliance_1456(1456, AwardAlliance.getDefaultInstance(), AwardAllianceRt.getDefaultInstance()), // 赏赐
     GetGiftTypesFreeReward_1457(
         1457,
@@ -1384,15 +1607,19 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         PlayLotteryScoreRewardRt.getDefaultInstance()
     ),
 
+    // 活动抽卡type=17(权重)
+    PlayActivityLotteryByWeight_1552(
+        1552,
+        PlayActivityLotteryByWeight.getDefaultInstance(),
+        PlayActivityLotteryByWeightRt.getDefaultInstance()
+    ),
+
 
     // 奇观争夺战活动
     QueryWonderInfo_1571(1571, QueryWonderInfo.getDefaultInstance(), QueryWonderInfoRt.getDefaultInstance()),
     QueryWonderRank_1572(1572, QueryWonderRank.getDefaultInstance(), QueryWonderRankRt.getDefaultInstance()),
-    QueryWonderKillRank_1573(
-        1573,
-        QueryWonderKillRank.getDefaultInstance(),
-        QueryWonderKillRankRt.getDefaultInstance()
-    ),
+    QueryWonderKillRank_1573(1573, QueryWonderKillRank.getDefaultInstance(), QueryWonderKillRankRt.getDefaultInstance()),
+    QueryWonderStatistics_1574(1574, QueryWonderStatistics.getDefaultInstance(), QueryWonderStatisticsRt.getDefaultInstance()),
 
     // 查询他人信息
     OtherPersonalPower_1576(1576, OtherPersonalPower.getDefaultInstance(), OtherPersonalPowerRt.getDefaultInstance()),
@@ -1408,6 +1635,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     // 开服活动
     GetResetLoginGift_1584(1584, GetResetLoginGift.getDefaultInstance(), GetResetLoginGiftRt.getDefaultInstance()),
     GetLoginGift_1585(1585, GetLoginGift.getDefaultInstance(), GetLoginGiftRt.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     BuyGrowthFund_1586(1586, BuyGrowthFund.getDefaultInstance(), BuyGrowthFundRt.getDefaultInstance()),
     GetLoginAutoGift_1587(1587, GetLoginAutoGift.getDefaultInstance(), GetLoginAutoGiftRt.getDefaultInstance()),
     BuyPurchase_1588(1588, BuyPurchase.getDefaultInstance(), BuyPurchaseRt.getDefaultInstance()),
@@ -1431,6 +1659,15 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     // 查询任务
     QueryTask_1615(1615, QueryTask.getDefaultInstance(), QueryTaskRt.getDefaultInstance()),
 
+    // 查询任务(批量)
+    BatchQueryTask_1616(1616, BatchQueryTask.getDefaultInstance(), BatchQueryTaskRt.getDefaultInstance()),
+
+    // 刷新活动任务
+    RefreshActivityTask_1617(1617, RefreshActivityTask.getDefaultInstance(), RefreshActivityTaskRt.getDefaultInstance()),
+
+    // 探测屋在线奖励
+    ReceiveRadarOnlineReward_1618(1618, ReceiveRadarOnlineReward.getDefaultInstance(), ReceiveRadarOnlineRewardRt.getDefaultInstance()),
+
     // 查询皮肤
     QuerySkin_1619(1619, QuerySkin.getDefaultInstance(), QuerySkinRt.getDefaultInstance()),
 
@@ -1444,7 +1681,23 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     BuyPhoto_1623(1623, BuyPhoto.getDefaultInstance(), BuyPhotoRt.getDefaultInstance()),
 
     // 查询头像url
+    @Deprecated("ED_废弃")
     QueryPictureUrl_1624(1624, QueryPictureUrl.getDefaultInstance(), QueryPictureUrlRt.getDefaultInstance()),
+
+    //查询skin模块加成(皮肤(包含护卫)，头像框)
+    QuerySkinEffectInfo_1625(
+        1625,
+        QuerySkinEffectInfo.getDefaultInstance(),
+        QuerySkinEffectInfoRt.getDefaultInstance()
+    ),
+
+    // 上传自定义头像
+    UploadPictureUrl_1626(1626, UploadPictureUrl.getDefaultInstance(), UploadPictureUrlRt.getDefaultInstance()),
+
+
+    // 举报自定义头像
+    @Deprecated("ED_暂时保留, 等外网前端经历过强更之后删除")
+    ReportPictureUrl_1627(1627, ReportPictureUrl.getDefaultInstance(), ReportPictureUrlRt.getDefaultInstance()),
 
     // 刷新建筑视图
     RefreshHomeBuildingView_1631(
@@ -1580,6 +1833,18 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         BarracksRefugeSoldierCancelRt.getDefaultInstance()
     ),//避难所藏兵召回
 
+    ReceiveBattleFieldRewardBox_1691(
+        1691,
+        ReceiveBattleFieldRewardBox.getDefaultInstance(),
+        ReceiveBattleFieldRewardBoxRt.getDefaultInstance()
+    ),// 领取中立战场宝箱
+
+    AutoMakeSoldierFuncChangeSwitch_1692(
+        1692,
+        AutoMakeSoldierFuncChangeSwitch.getDefaultInstance(),
+        AutoMakeSoldierFuncChangeSwitchRt.getDefaultInstance()
+    ), //自动造兵开关切换
+
     // 客户端报备购买付费礼包
     BuyGiftPackage_1701(1701, BuyGiftPackage.getDefaultInstance(), BuyGiftPackageRt.getDefaultInstance()),
 
@@ -1597,48 +1862,33 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         QueryBuyGiftPackageInfoRt.getDefaultInstance()
     ),
 
-    PayNotice_1705(
-        1705,
-        PayNotice.getDefaultInstance(),
-        PayNoticeRt.getDefaultInstance()
-    ),
+    PayNotice_1705(1705, PayNotice.getDefaultInstance(), PayNoticeRt.getDefaultInstance()),
 
-    FindCanBuyGiftPackage_1706(
-        1706,
-        FindCanBuyGiftPackage.getDefaultInstance(),
-        FindCanBuyGiftPackageRt.getDefaultInstance()
-    ),
+    FindCanBuyGiftPackage_1706(1706, FindCanBuyGiftPackage.getDefaultInstance(), FindCanBuyGiftPackageRt.getDefaultInstance()),
 
     // 腾讯点券兑换成钻石
-    ExchangeTencentRmb_1708(
-        1708,
-        ExchangeTencentRmb.getDefaultInstance(),
-        ExchangeTencentRmbRt.getDefaultInstance()
-    ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
+    ExchangeTencentRmb_1708(1708, ExchangeTencentRmb.getDefaultInstance(), ExchangeTencentRmbRt.getDefaultInstance()),
 
-    BuyPurchaseActivityDiyGiftPackage_1709(
-        1709,
-        BuyPurchaseActivityDiyGiftPackage.getDefaultInstance(),
-        BuyPurchaseActivityDiyGiftPackageRt.getDefaultInstance()
-    ), // 购买活动带的自选礼包
+    // 购买活动带的自选礼包
+    BuyPurchaseActivityDiyGiftPackage_1709(1709, BuyPurchaseActivityDiyGiftPackage.getDefaultInstance(), BuyPurchaseActivityDiyGiftPackageRt.getDefaultInstance()),
 
-    GmBuyGiftPackage_1712(
-        1712,
-        GmBuyGiftPackage.getDefaultInstance(),
-        GmBuyGiftPackageRt.getDefaultInstance()
-    ), // GM获得礼包
+    // GM获得礼包
+    GmBuyGiftPackage_1712(1712, GmBuyGiftPackage.getDefaultInstance(), GmBuyGiftPackageRt.getDefaultInstance()),
 
-    ExchangeGiftPackageItem_1713(
-        1713,
-        ExchangeGiftPackageItem.getDefaultInstance(),
-        ExchangeGiftPackageItemRt.getDefaultInstance()
-    ),
+    // 更换自选礼包的奖励选项
+    ExchangeGiftPackageItem_1713(1713, ExchangeGiftPackageItem.getDefaultInstance(), ExchangeGiftPackageItemRt.getDefaultInstance()),
 
-    QueryInvestActivity_1714(
-        1714,
-        QueryInvestActivity.getDefaultInstance(),
-        QueryInvestActivityRt.getDefaultInstance()
-    ),
+    QueryInvestActivity_1714(1714, QueryInvestActivity.getDefaultInstance(), QueryInvestActivityRt.getDefaultInstance()),
+
+    // 使用游戏内代币(资源)购买礼包
+    ResBuyGiftPackage_1715(1715, ResBuyGiftPackage.getDefaultInstance(), ResBuyGiftPackageRt.getDefaultInstance()),
+
+    // 为第三方支付获取各档位商品的价格
+    QueryProductPrices_1716(1716, QueryProductPrices.getDefaultInstance(), QueryProductPricesRt.getDefaultInstance()),
+
+    // 设置部队预设
+    ArmyPreSet_1724(1724, ArmyPreSet.getDefaultInstance(), ArmyPreSetRt.getDefaultInstance()),
 
     // 查询救援物资
     QueryRescueRes_1725(1725, QueryRescueRes.getDefaultInstance(), QueryRescueResRt.getDefaultInstance()),
@@ -1656,6 +1906,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ReportElapsed_1730(1730, ReportElapsed.getDefaultInstance(), ReportElapsedRt.getDefaultInstance()),
 
     // 确认破保护罩
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     ConfirmCoverOver_1731(1731, ConfirmCoverOver.getDefaultInstance(), ConfirmCoverOverRt.getDefaultInstance()),
 
     // 检测名称是否合法
@@ -1685,6 +1936,12 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         QueryLordActivityRankRt.getDefaultInstance()
     ),
 
+    QueryCrossLordActivity_1740(
+        1740,
+        QueryCrossLordActivity.getDefaultInstance(),
+        QueryCrossLordActivityRt.getDefaultInstance()
+    ),
+
     // 查询至高领主活动历史
     QueryLordActivityHistory_2092(
         2092,
@@ -1703,10 +1960,33 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ),
 
     // 挑选领主方案
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     ChooesLord_1739(1739, ChooesLord.getDefaultInstance(), ChooesLordRt.getDefaultInstance()),
 
     GuideInfo_1741(1741, GuideInfo.getDefaultInstance(), GuideInfoRt.getDefaultInstance()),
 
+    //请求消逝大陆活动信息协议
+    QueryDisappearLordActivity_1742(
+        1742,
+        QueryDisappearLordActivity.getDefaultInstance(),
+        QueryDisappearLordActivityRt.getDefaultInstance()
+    ),
+
+    Match3TilesQuery_1751(
+        1751,
+        Match3TilesActivityQuery.getDefaultInstance(),
+        Match3TilesActivityQueryRt.getDefaultInstance()
+    ),
+    Match3TilesActivityOpt_1752(
+        1752,
+        Match3TilesActivityOpt.getDefaultInstance(),
+        Match3TilesActivityOptRt.getDefaultInstance()
+    ),
+    Match3TilesRefresh_1753(
+        1753,
+        Match3TilesRefresh.getDefaultInstance(),
+        Match3TilesRefreshRt.getDefaultInstance()
+    ),
     // 兑换礼品码
     DrawGiftKey_1799(
         1799,
@@ -1723,7 +2003,9 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ),
 
     // 联盟战(1810-1830)
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     OpenAllianceFight_1810(1810, OpenAllianceFight.getDefaultInstance(), OpenAllianceFightRt.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     OpenAllianceFightMain_1811(
         1811,
         OpenAllianceFightMain.getDefaultInstance(),
@@ -1735,36 +2017,42 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         QueryAllianceFightLogs.getDefaultInstance(),
         QueryAllianceFightLogsRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     RewardAllianceFightMy_1817(
         1817,
         RewardAllianceFightMy.getDefaultInstance(),
         RewardAllianceFightMyRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     AskAllianceSolo_1818(
         1818,
         AskAllianceSolo.getDefaultInstance(),
         AskAllianceSoloRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QueryAllianceSolo_1819(
         1819,
         QueryAllianceSolo.getDefaultInstance(),
         QueryAllianceSoloRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QueryAllianceSoloMain_1820(
         1820,
         QueryAllianceSoloMain.getDefaultInstance(),
         QueryAllianceSoloMainRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     AllianceSoloEnd_1822(
         1822,
         AllianceSoloEnd.getDefaultInstance(),
         AllianceSoloEndRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     RewardAllianceSoloMy_1824(
         1824,
         RewardAllianceSoloMy.getDefaultInstance(),
@@ -1778,14 +2066,28 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         HeroTrainCardCombineRt.getDefaultInstance()
     ),
 
+    // 琥珀秘境
+    MysteryQuery_1840(1840, MysteryQuery.getDefaultInstance(), MysteryQueryRt.getDefaultInstance()),
+    MysteryOpt_1841(1841, MysteryOpt.getDefaultInstance(), MysteryOptRt.getDefaultInstance()),
+    QueryGrandPrizeRecord_1842(1842, QueryGrandPrizeRecord.getDefaultInstance(), QueryGrandPrizeRecordRt.getDefaultInstance()),
+    QueryLotteryBoss_1843(1843, QueryLotteryBoss.getDefaultInstance(), QueryLotteryBossRt.getDefaultInstance()),
+    DrawLotteryBoss_1844(1844, DrawLotteryBoss.getDefaultInstance(), DrawLotteryBossRt.getDefaultInstance()),
+    RefreshLotteryBoss_1845(1845, RefreshLotteryBoss.getDefaultInstance(), RefreshLotteryBossRt.getDefaultInstance()),
+    QueryLotteryBossOnly_1846(1846, QueryLotteryBossOnly.getDefaultInstance(), QueryLotteryBossOnlyRt.getDefaultInstance()),
+    ReceiveAccFestivalReward_1847(1847, ReceiveAccFestivalReward.getDefaultInstance(), ReceiveAccFestivalRewardRt.getDefaultInstance()),
+
     // 单人PVE玩法协议 1851 - 1870
     OpenBigCity_1851(1851, OpenBigCity.getDefaultInstance(), OpenBigCityRt.getDefaultInstance()),
 
     // RewardOccupy_1852(1852, RewardOccupy.getDefaultInstance(), RewardOccupyRt.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     BeginFightBigCity_1856(1856, BeginFightBigCity.getDefaultInstance(), BeginFightBigCityRt.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     EndFightBigCity_1857(1857, EndFightBigCity.getDefaultInstance(), EndFightBigCityRt.getDefaultInstance()),
     ExitEliminateFight_1859(1859, ExitEliminateFight.getDefaultInstance(), ExitEliminateFightRt.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     BeginFightPveRob_1860(1860, BeginFightPveRob.getDefaultInstance(), BeginFightPveRobRt.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     EndFightPveRob_1861(1861, EndFightPveRob.getDefaultInstance(), EndFightPveRobRt.getDefaultInstance()),
     QuickPassKillRobInnerCity_1866(
         1866,
@@ -1803,6 +2105,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ),
     PveUnlockCloud_1872(1872, UnlockCloud.getDefaultInstance(), UnlockCloudRt.getDefaultInstance()),
     PickupResSingle_1873(1873, PickupResSingle.getDefaultInstance(), PickupResSingleRt.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     BeginAutoFightPveRob_1874(
         1874,
         BeginAutoFightPveRob.getDefaultInstance(),
@@ -1823,6 +2126,11 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         InnerCityAreaClean.getDefaultInstance(),
         InnerCityAreaCleanRt.getDefaultInstance()
     ),
+    FadeCloud_1879(
+        1879,
+        FadeCloud.getDefaultInstance(),
+        FadeCloudRt.getDefaultInstance()
+    ),
 
     WalkStop_1883(1883, WalkStop.getDefaultInstance(), WalkStopRt.getDefaultInstance()),
     WalkWithForce_1884(1884, WalkWithForce.getDefaultInstance(), WalkWithForceRt.getDefaultInstance()),
@@ -1831,7 +2139,9 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     WatchMapAllCastle_1889(1889, WatchMapAllCastle.getDefaultInstance(), WatchMapAllCastleRt.getDefaultInstance()),
 
     // 支线任务的三消战斗
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     BeginSideTaskFight_1892(1892, BeginSideTaskFight.getDefaultInstance(), BeginSideTaskFightRt.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     EndSideTaskFight_1893(1893, EndSideTaskFight.getDefaultInstance(), EndSideTaskFightRt.getDefaultInstance()),
 
     // 查询行军线详细信息
@@ -1842,6 +2152,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ),
 
     // 开始打劫采集行军线
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     BeginRobFarmWalkLineFight_1902(
         1902,
         BeginRobFarmWalkLineFight.getDefaultInstance(),
@@ -1849,6 +2160,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ),
 
     // 结束打劫采集行军线
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     EndRobFarmWalkLineFight_1903(
         1903,
         EndRobFarmWalkLineFight.getDefaultInstance(),
@@ -1863,6 +2175,9 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
 
     // 修改旗帜
     UpdateFlagInfo_1912(1912, UpdateFlagInfo.getDefaultInstance(), UpdateFlagInfoRt.getDefaultInstance()),
+
+    // task:Evo_19006【商业化】岛屿集市
+    HeroFragmentsStoreOpt_1918(1918, HeroFragmentsStoreOpt.getDefaultInstance(), HeroFragmentsStoreOptRt.getDefaultInstance()),
 
     // 道具合成
     PropExchange_1919(1919, PropExchange.getDefaultInstance(), PropExchangeRt.getDefaultInstance()),
@@ -1903,6 +2218,11 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         QueryTimeExchangeShop.getDefaultInstance(),
         QueryTimeExchangeShopRt.getDefaultInstance()
     ),
+    QueryFestivalActivity_1927(1927, QueryFestivalActivity.getDefaultInstance(), QueryFestivalActivityRt.getDefaultInstance()),
+    FestivalActivityPlay_1928(1928, FestivalActivityPlay.getDefaultInstance(), FestivalActivityPlayRt.getDefaultInstance()),
+    FestivalActivityReceive_1929(1929, FestivalActivityReceive.getDefaultInstance(), FestivalActivityReceiveRt.getDefaultInstance()),
+    FestivalActivityStrategyReceive_1930(1930, FestivalActivityStrategyReceive.getDefaultInstance(), FestivalActivityStrategyReceiveRt.getDefaultInstance()),
+
     // 恐龙 1931-1940
     DinosaurOperate_1931(
         1931,
@@ -1913,6 +2233,45 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         1932,
         DinosaurQuery.getDefaultInstance(),
         DinosaurQueryRt.getDefaultInstance()
+    ),
+    //恐龙射击关卡完成发奖
+    DinosaurShootAwardPrizes_1933(
+        1933,
+        DinosaurShootAwardPrizes.getDefaultInstance(),
+        DinosaurShootAwardPrizesRt.getDefaultInstance()
+    ),
+    //恐龙射击关卡开始
+    DinosaurShootStar_1934(
+        1934,
+        DinosaurShootStar.getDefaultInstance(),
+        DinosaurShootStarRt.getDefaultInstance()
+    ),
+    // 恐龙狩猎锦标赛关卡完成发奖
+    DinosaurHuntingGamePrizes_1935(
+        1935,
+        DinosaurHuntingGamePrizes.getDefaultInstance(),
+        DinosaurHuntingGamePrizesRt.getDefaultInstance()
+    ),
+    // 恐龙狩猎锦标赛关卡开始
+    DinosaurHuntingGameStart_1936(
+        1936,
+        DinosaurHuntingGameStart.getDefaultInstance(),
+        DinosaurHuntingGameStartRt.getDefaultInstance()
+    ),
+    DinosaurRadarMissionOpen_1938(
+        1938,
+        DinosaurRadarMissionOpen.getDefaultInstance(),
+        DinosaurRadarMissionOpenRt.getDefaultInstance()
+    ),
+    DinosaurRadarMissionComplete_1939(
+        1939,
+        DinosaurRadarMissionComplete.getDefaultInstance(),
+        DinosaurRadarMissionCompleteRt.getDefaultInstance()
+    ),
+    DinosaurBloodlineFragmentExchange_1940(
+        1940,
+        DinosaurBloodlineFragmentExchange.getDefaultInstance(),
+        DinosaurBloodlineFragmentExchangeRt.getDefaultInstance()
     ),
     CreateAllianceBuild_2001(
         2001,
@@ -1957,6 +2316,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         InviteJoinAllianceBuilding.getDefaultInstance(),
         InviteJoinAllianceBuildingRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     AtkAllianceFlag_2013(2013, AtkAllianceFlag.getDefaultInstance(), AtkAllianceFlagRt.getDefaultInstance()),
 
     // 联盟建筑迁移
@@ -2016,6 +2376,13 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         WorldActivityDrawRt.getDefaultInstance()
     ),
 
+    //天下大势排行榜奖励领取
+    WorldActivityRankRewardDraw_2056(
+        2056,
+        WorldActivityRankRewardDraw.getDefaultInstance(),
+        WorldActivityRankRewardDrawRt.getDefaultInstance()
+    ),
+
     // 战印升级
     HeroSharedEquipmentsUp_2070(
         2070,
@@ -2066,6 +2433,11 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         QueryAllianceDailyLmt.getDefaultInstance(),
         QueryAllianceDailyLmtRt.getDefaultInstance()
     ),
+    AllianceResourceExchange_2088(
+        2088,
+        AllianceResourceExchange.getDefaultInstance(),
+        AllianceResourceExchangeRt.getDefaultInstance()
+    ),
 
     // 资源运输
     WalkPvpTransport_2090(2090, WalkPvpTransport.getDefaultInstance(), WalkPvpTransportRt.getDefaultInstance()),
@@ -2104,41 +2476,49 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ),
 
     // 联盟分盟 2100 - 2110
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QueryAllianceFiliale_2100(
         2100,
         QueryAllianceFiliale.getDefaultInstance(),
         QueryAllianceFilialeRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     InviteAllianceFiliale_2101(
         2101,
         InviteAllianceFiliale.getDefaultInstance(),
         InviteAllianceFilialeRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CancelInviteAllianceFiliale_2102(
         2102,
         CancelInviteAllianceFiliale.getDefaultInstance(),
         CancelInviteAllianceFilialeRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     JoinAllianceFiliale_2103(
         2103,
         JoinAllianceFiliale.getDefaultInstance(),
         JoinAllianceFilialeRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     RemoveAllianceFiliale_2104(
         2104,
         RemoveAllianceFiliale.getDefaultInstance(),
         RemoveAllianceFilialeRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QuitAllianceFiliale_2105(
         2105,
         QuitAllianceFiliale.getDefaultInstance(),
         QuitAllianceFilialeRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QueryAllianceFilialeReq_2106(
         2106,
         QueryAllianceFilialeReq.getDefaultInstance(),
         QueryAllianceFilialeReqRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     ApplyAllianceFilialeQuit_2107(
         2107,
         ApplyAllianceFilialeQuit.getDefaultInstance(),
@@ -2233,6 +2613,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         AllianceWorldWonderCancelApplyRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QueryFortuitousReward_2141(
         2141,
         QueryFortuitousReward.getDefaultInstance(),
@@ -2242,6 +2623,13 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         2142,
         ReceiveStationedReward.getDefaultInstance(),
         ReceiveStationedRewardRt.getDefaultInstance()
+    ),
+
+    // 查询活动状态
+    QueryActivityTime_2143(
+        2143,
+        QueryActivityTime.getDefaultInstance(),
+        QueryActivityTimeRt.getDefaultInstance()
     ),
 
     // 查询道具合成记录
@@ -2281,22 +2669,25 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         QueryNpcCityActivityRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     EliminateInstanceAtkStart_2180(
         2180,
         EliminateInstanceAtkStart.getDefaultInstance(),
         EliminateInstanceAtkStartRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     EliminateInstanceAtkFinish_2181(
         2181,
         EliminateInstanceAtkFinish.getDefaultInstance(),
         EliminateInstanceAtkFinishRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     SlgInstanceAtkStart_2182(
         2182,
         SlgInstanceAtkStart.getDefaultInstance(),
         SlgInstanceAtkStartRt.getDefaultInstance()
     ),
-
+    RexComingComplete_2191(2191, RexComingComplete.getDefaultInstance(), RexComingCompleteRt.getDefaultInstance()),
     RecvTssSdkData_2200(2200, RecvTssSdkData.getDefaultInstance(), RecvTssSdkDataRt.getDefaultInstance()),
 
     // 日月王城模块(2201-2230)
@@ -2335,7 +2726,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     CapitalBattleKingGiveGift_2206(
         2206,
         CapitalBattleKingGiveGift.getDefaultInstance(),
-        CapitalBattleKingGiveGift.getDefaultInstance()
+        CapitalBattleKingGiveGiftRt.getDefaultInstance()
     ),
 
     // 打开王国官员界面
@@ -2373,14 +2764,17 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         CapitalBattleUseSkillLogOpenRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CancelNewBossOpen_2212(2212, CancelNewBossOpen.getDefaultInstance(), CancelNewBossOpenRt.getDefaultInstance()),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QuerySummonRank_2213(2213, QuerySummonRank.getDefaultInstance(), QuerySummonRankRt.getDefaultInstance()),
 
     QueryYanwuMember_2214(2214, QueryYanwuMember.getDefaultInstance(), QueryYanwuMemberRt.getDefaultInstance()),
 
     QueryYanwuRank_2215(2215, QueryYanwuRank.getDefaultInstance(), QueryYanwuRankRt.getDefaultInstance()),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QuerySummonSuccessRecord_2216(
         2216,
         QuerySummonSuccessRecord.getDefaultInstance(),
@@ -2393,6 +2787,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         QueryTotalSummonRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QuerySummonFightRecord_2218(
         2218,
         QuerySummonFightRecord.getDefaultInstance(),
@@ -2481,30 +2876,131 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         AllianceMineOptRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     BeginAutoFightNpcCity_2240(
         2240,
         BeginAutoFightNpcCity.getDefaultInstance(),
         BeginAutoFightNpcCityRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CancelAutoFightNpcCity_2241(
         2241,
         CancelAutoFightNpcCity.getDefaultInstance(),
         CancelAutoFightNpcCityRt.getDefaultInstance()
     ),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     BeginAutoFightAllianceBuild_2242(
         2242,
         BeginAutoFightAllianceBuild.getDefaultInstance(),
         BeginAutoFightAllianceBuildRt.getDefaultInstance()
     ),
 
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CancelAutoFightAllianceBuild_2243(
         2243,
         CancelAutoFightAllianceBuild.getDefaultInstance(),
         CancelAutoFightAllianceBuildRt.getDefaultInstance()
     ),
 
+    ScrambleEggsQuery_2244(
+        2244,
+        ScrambleEggsQuery.getDefaultInstance(),
+        ScrambleEggsQueryRt.getDefaultInstance()
+    ),
+
+    ScrambleEggsHistoryDetailQuery_2245(
+        2245,
+        ScrambleEggsHistoryDetailQuery.getDefaultInstance(),
+        ScrambleEggsHistoryDetailQueryRt.getDefaultInstance()
+    ),
+
+    ScrambleEggsOpt_2246(
+        2246,
+        ScrambleEggsOpt.getDefaultInstance(),
+        ScrambleEggsOptRt.getDefaultInstance()
+    ),
+
+    ScrambleEggsHistoryQuery_2247(
+        2247,
+        ScrambleEggsHistoryQuery.getDefaultInstance(),
+        ScrambleEggsHistoryQueryRt.getDefaultInstance()
+    ),
+
+    QueryArenaInfo_2249(
+        2249,
+        QueryArenaInfo.getDefaultInstance(),
+        QueryArenaInfoRt.getDefaultInstance()
+    ),
+
+    QueryArenaChallengeList_2250(
+        2250,
+        QueryArenaChallengeList.getDefaultInstance(),
+        QueryArenaChallengeListRt.getDefaultInstance()
+    ),
+
+    SaveArenaFormation_2251(
+        2251,
+        SaveArenaFormation.getDefaultInstance(),
+        SaveArenaFormationRt.getDefaultInstance()
+    ),
+
+    QueryArenaChallengeRecord_2252(
+        2252,
+        QueryArenaChallengeRecord.getDefaultInstance(),
+        QueryArenaChallengeRecordRt.getDefaultInstance()
+    ),
+
+    QueryArenaPlayer_2253(
+        2253,
+        QueryArenaPlayer.getDefaultInstance(),
+        QueryArenaPlayerRt.getDefaultInstance()
+    ),
+
+    BuyChallengeTimes_2254(
+        2254,
+        BuyChallengeTimes.getDefaultInstance(),
+        BuyChallengeTimesRt.getDefaultInstance()
+    ),
+
+    RefreshChallengeList_2255(
+        2255,
+        RefreshChallengeList.getDefaultInstance(),
+        RefreshChallengeListRt.getDefaultInstance()
+    ),
+
+    RefreshArenaChallengePos_2256(
+        2256,
+        RefreshArenaChallengePos.getDefaultInstance(),
+        RefreshArenaChallengePosRt.getDefaultInstance()
+    ),
+
+    QueryCreateAllianceState_2257(
+        2257,
+        QueryCreateAllianceState.getDefaultInstance(),
+        QueryCreateAllianceStateRt.getDefaultInstance()
+    ),
+
+    QueryOperationMuseumVisitList_2258(
+        2258,
+        OperationMuseumVisitListQurey.getDefaultInstance(),
+        OperationMuseumVisitListQureyRt.getDefaultInstance()
+    ),
+
+    OperationMuseumVisit_2259(
+        2259,
+        OperationMuseumVisit.getDefaultInstance(),
+        OperationMuseumVisitRt.getDefaultInstance()
+    ),
+
+    OperationMuseumLike_2260(
+        2260,
+        OperationMuseumLike.getDefaultInstance(),
+        OperationMuseumLikeRt.getDefaultInstance()
+    ),
+
     // 寻路
+    FindPathBatch_2494(2494, FindPathBatch.getDefaultInstance(), FindPathBatchRt.getDefaultInstance()),
     FindPath_2495(2495, FindPath.getDefaultInstance(), FindPathRt.getDefaultInstance()),
 
     // 查询所有盟友位置
@@ -2525,6 +3021,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     WatchWorld_2498(2498, WatchWorld.getDefaultInstance(), WatchWorldRt.getDefaultInstance()),
 
     // 三消测试-帮客户端生成结构
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     EliminateTestBuild_2499(2499, EliminateTestBuild.getDefaultInstance(), EliminateTestBuildRt.getDefaultInstance()),
 
     // 模块数据
@@ -2532,6 +3029,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
 
     /**联盟boss模块2501 - 2509*/
     // 联盟boss捐献
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     ALLIANCE_NEW_BOSS_DONATE(
         2501,
         AllianceNewBossDonate.getDefaultInstance(),
@@ -2546,6 +3044,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ),
 
     // 查询联盟boss伤害
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     QueryAllianceNewBossHurt_2503(
         2503,
         QueryAllianceNewBossHurt.getDefaultInstance(),
@@ -2686,6 +3185,16 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
         ExitBattleField.getDefaultInstance(),
         ExitBattleFieldRt.getDefaultInstance(),
     ),
+    BattlefieldWonderQuery_2540(
+        2540,
+        BattlefieldWonderQuery.getDefaultInstance(),
+        BattlefieldWonderQueryRt.getDefaultInstance()
+    ),
+    BattleFieldInnerOpt_2541(
+        2541,
+        BattleFieldInnerOpt.getDefaultInstance(),
+        BattleFieldInnerOptRt.getDefaultInstance()
+    ),
     QueryNpcCityOccupyHistory_2542(
         2542,
         QueryNpcCityOccupyHistory.getDefaultInstance(),
@@ -2707,6 +3216,20 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     CancelGiveUpNpcCity_2548(2548, CancelGiveUpNpcCity.getDefaultInstance(), CancelGiveUpNpcCityRt.getDefaultInstance()),   // 取消舍弃npc城池
     SetNeedSoldier_2549(2549, SetNeedSoldier.getDefaultInstance(), SetNeedSoldierRt.getDefaultInstance()),  // 设置需要的士兵信息
 
+    // 战场
+    AllianceHegemonyRankQuery_2550(2550, AllianceHegemonyRankQuery.getDefaultInstance(), AllianceHegemonyRankQueryRt.getDefaultInstance()),
+    AllianceHegemonyQuery_2551(2551, AllianceHegemonyQuery.getDefaultInstance(), AllianceHegemonyQueryRt.getDefaultInstance()),
+    AllianceHegemonyApply_2552(2552, AllianceHegemonyApply.getDefaultInstance(), AllianceHegemonyApplyRt.getDefaultInstance()),
+    AllianceHegemonyHistoryRank_2554(2554, AllianceHegemonyHistoryRank.getDefaultInstance(), AllianceHegemonyHistoryRankRt.getDefaultInstance()),
+    AllianceHegemonyOpt_2555(2555, AllianceHegemonyOpt.getDefaultInstance(), AllianceHegemonyOptRt.getDefaultInstance()),
+
+    BattlefieldInnerQuery_2556(2556, BattlefieldInnerQuery.getDefaultInstance(), BattlefieldInnerQueryRt.getDefaultInstance()),
+    QueryBattleFieldPlayerScoreRank_2557(2557, QueryBattleFieldPlayerScoreRank.getDefaultInstance(), QueryBattleFieldPlayerScoreRankRt.getDefaultInstance()),
+    ClearBattleFieldTime_2558(2558, ClearBattleFieldTime.getDefaultInstance(), ClearBattleFieldTimeRt.getDefaultInstance()),
+    UseBattleFieldChargeBuff_2559(2559, UseBattleFieldChargeBuff.getDefaultInstance(), UseBattleFieldChargeBuffRt.getDefaultInstance()),
+    UseBattleFieldCitySkill_2560(2560, UseBattleFieldCitySkill.getDefaultInstance(), UseBattleFieldCitySkillRt.getDefaultInstance()),
+    MoveCityInBattleField_2561(2561, MoveCityInBattleField.getDefaultInstance(), MoveCityInBattleFieldRt.getDefaultInstance()),
+
     // 联盟资源补给
     QueryAllianceSupply_2562(2562, QueryAllianceSupply.getDefaultInstance(), QueryAllianceSupplyRt.getDefaultInstance()),
     AllianceSupplyRequest_2563(2563, AllianceSupplyRequest.getDefaultInstance(), AllianceSupplyRequestRt.getDefaultInstance()),
@@ -2717,10 +3240,1076 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     AllianceColosseumQuery_2566(2566, AllianceColosseumQuery.getDefaultInstance(), AllianceColosseumQueryRt.getDefaultInstance()),
     AllianceColosseumOpt_2567(2567, AllianceColosseumOpt.getDefaultInstance(), AllianceColosseumOptRt.getDefaultInstance()),
 
+    BattlefieldWarSituation_2568(2568, BattlefieldWarSituation.getDefaultInstance(), BattlefieldWarSituationRt.getDefaultInstance()),
+
+    // NpcCity
+    NeutralCityQuery_2571(2571, NeutralCityQuery.getDefaultInstance(), NeutralCityQueryRt.getDefaultInstance()),
+    NeutralCityOpt_2572(2572, NeutralCityOpt.getDefaultInstance(), NeutralCityOptRt.getDefaultInstance()),
+    QueryNeutralCityRank_2574(2574, QueryNeutralCityRank.getDefaultInstance(), QueryNeutralCityRankRt.getDefaultInstance()),
+    OpenNeutralCityMain_2575(2575, OpenNeutralCityMain.getDefaultInstance(), OpenNeutralCityMainRt.getDefaultInstance()),
+
+
+    //关注社群2580-2585
+    //关注社群活动查询
+    FollowCommunityQuery_2580(
+        2580,
+        FollowCommunityQuery.getDefaultInstance(),
+        FollowCommunityQueryRt.getDefaultInstance()
+    ),
+
+    //关注社群活动领奖
+    ReceiveFollowCommunityReward_2581(
+        2581,
+        ReceiveFollowCommunityReward.getDefaultInstance(),
+        ReceiveFollowCommunityRewardRt.getDefaultInstance()
+    ),
+
+    HeroEchoQueryInfo_2582(2582, QueryHeroEchoShop.getDefaultInstance(), QueryHeroEchoShopRt.getDefaultInstance()),
+    HeroEchoPurchaseItem_2583(
+        2583,
+        PurchaseHeroEchoShop.getDefaultInstance(),
+        PurchaseHeroEchoShopRt.getDefaultInstance()
+    ),
+
+    // 幸运宝箱信息获取
+    LuckyTreasureInfo_2584(2584, QueryLuckyTreasure.getDefaultInstance(), QueryLuckyTreasureRt.getDefaultInstance()),
+
+    // 幸运宝箱选择大奖
+    LuckyTreasureChooseBig_2585(
+        2585,
+        LuckyTreasureChooseBig.getDefaultInstance(),
+        LuckyTreasureChooseBigRt.getDefaultInstance()
+    ),
+
+    // 开幸运宝箱
+    PlayLuckyTreasure_2586(2586, PlayLuckyTreasure.getDefaultInstance(), PlayLuckyTreasureRt.getDefaultInstance()),
+
+    // 幸运宝箱领取阶段奖励
+    LuckyTreasureGetStageReward_2587(
+        2587,
+        LuckyTreasureGetStageReward.getDefaultInstance(),
+        LuckyTreasureGetStageRewardRt.getDefaultInstance()
+    ),
+
+    //2591-2595 私人订制
+    //私人定制查询活动信息
+    QueryPrivateCustomizationGiftInfo_2591(
+        2591,
+        QueryPrivateCustomizationGiftInfo.getDefaultInstance(),
+        QueryPrivateCustomizationGiftInfoRt.getDefaultInstance()
+    ),
+    //私人订制活动，礼包自选道具变更信息
+    ChangePrivateCustomizationGiftInfo_2592(
+        2592,
+        ChangePrivateCustomizationGiftInfo.getDefaultInstance(),
+        ChangePrivateCustomizationGiftInfoRt.getDefaultInstance()
+    ),
+    //2596-2600
+    //收回功能性建筑，1.是功能建筑2.是高级装饰物，满足这两个才可以收回!!!!
+    InnerCityReclaimTheBuilding_2596(
+        2596,
+        InnerCityReclaimTheBuilding.getDefaultInstance(),
+        InnerCityReclaimTheBuildingRt.getDefaultInstance()
+    ),
+    //将功能性建筑直接从建筑背包移到当前布局中
+    InnerCityBuildingPlacement_2597(
+        2597,
+        InnerCityBuildingPlacement.getDefaultInstance(),
+        InnerCityBuildingPlacementRt.getDefaultInstance()
+    ),
+    //使用高级装饰物特效
+    UseAdvancedDecorationSpecial_2598(
+        2598,
+        UseAdvancedDecorationSpecial.getDefaultInstance(),
+        UseAdvancedDecorationSpecialRt.getDefaultInstance()
+    ),
+
+    //岛主获取特定界面的战力排行榜.排除自己
+    QueryKingRank_2599(
+        2599,
+        QueryKingRank.getDefaultInstance(),
+        QueryKingRankRt.getDefaultInstance()
+    ),
+
+    FuzzyQueryKingRank_2600(
+        2600,
+        FuzzyQueryKingRank.getDefaultInstance(),
+        FuzzyQueryKingRankRt.getDefaultInstance()
+    ),
+
+    //只作为装饰商店
+    PersonalDurableShopQuery_2601(
+        2601,
+        PersonalDurableShopQuery.getDefaultInstance(),
+        PersonalDurableShopQueryRt.getDefaultInstance()
+    ),
+
+    // 只作为装饰购买
+    PersonalDurableShopExchange_2602(
+        2602,
+        PersonalDurableShopExchange.getDefaultInstance(),
+        PersonalDurableShopExchangeRt.getDefaultInstance()
+    ),
+
+    // 获取喜气洋洋活动
+    PuzzleTaskActvQuery_2603(
+        2603,
+        PuzzleTaskActvQuery.getDefaultInstance(),
+        PuzzleTaskActvQueryRt.getDefaultInstance()
+    ),
+
+    // 简单类型商店的统一购买
+    ReceivePuzzleTaskActvReward_2604(
+        2604,
+        ReceivePuzzleTaskActvReward.getDefaultInstance(),
+        ReceivePuzzleTaskActvRewardRt.getDefaultInstance()
+    ),
+
+    // 获取签到活动
+    ActivitySignInQuery_2605(
+        2605,
+        ActivitySignInQuery.getDefaultInstance(),
+        ActivitySignInQueryRt.getDefaultInstance()
+    ),
+
+    // 签到活动签到
+    MakeActivitySignIn_2606(
+        2606,
+        MakeActivitySignIn.getDefaultInstance(),
+        MakeActivitySignInRt.getDefaultInstance()
+    ),
+
+    // 签到活动领奖
+    ReceiveActivitySignInReward_2607(
+        2607,
+        ReceiveActivitySignInReward.getDefaultInstance(),
+        ReceiveActivitySignInRewardRt.getDefaultInstance()
+    ),
+
+    // 装扮商店客户端通知的刷新
+    RefreshPersonalDurableShop_2608(
+        2608,
+        RefreshPersonalDurableShop.getDefaultInstance(),
+        RefreshPersonalDurableShopRt.getDefaultInstance()
+    ),
+
+    // 新翻译
+    NewTranslate_2610(2610, NewTranslate.getDefaultInstance(), NewTranslateRt.getDefaultInstance()),
+
+    // 检查被艾特玩家是否在线
+    AtCheckPlayer_2611(2611, AtCheckPlayer.getDefaultInstance(), AtCheckPlayerRt.getDefaultInstance()),
+
+    // 自动参与集结 2616-2620
+    // 自动参与集结开启
+    BeginAutoJoinMass_2616(2616, BeginAutoJoinMass.getDefaultInstance(), BeginAutoJoinMassRt.getDefaultInstance()),
+
+    // 自动参与集结信息查询
+    QueryAutoJoinMass_2617(2617, QueryAutoJoinMass.getDefaultInstance(), QueryAutoJoinMassRt.getDefaultInstance()),
+
+    // 设置自动参与集结编队
+    SetFormationPlan_2618(2618, SetFormationPlan.getDefaultInstance(), SetFormationPlanRt.getDefaultInstance()),
+
+    // 查看自动参与集结编队
+    QuesyFormationPlan_2619(2619, QuesyFormationPlan.getDefaultInstance(), QuesyFormationPlanRt.getDefaultInstance()),
+
+    // 自动参与集结关闭
+    CloseAutoJoinMass_2620(2620, CloseAutoJoinMass.getDefaultInstance(), CloseAutoJoinMassRt.getDefaultInstance()),
+
+    // 获取bp活动
+    BattlePassActvQuery_2621(
+        2621,
+        BattlePassActvQuery.getDefaultInstance(),
+        BattlePassActvQueryRt.getDefaultInstance()
+    ),
+
+    // bp活动增加经验
+    BattlePassActvAddExp_2622(
+        2622,
+        BattlePassActvAddExp.getDefaultInstance(),
+        BattlePassActvAddExpRt.getDefaultInstance()
+    ),
+
+    // bp活动领取奖励
+    ReceiveBattlePassActvReward_2623(
+        2623,
+        ReceiveBattlePassActvReward.getDefaultInstance(),
+        ReceiveBattlePassActvRewardRt.getDefaultInstance()
+    ),
+
+
+    //通用举报
+    ReportGeneral_2625(2625,  ReportGeneral.getDefaultInstance(), ReportGeneralRt.getDefaultInstance()),
+
+    // 限时累充活动
+    ActivityTotalPayQuery_2626(
+        2626,
+        ActivityTotalPayQuery.getDefaultInstance(),
+        ActivityTotalPayQueryRt.getDefaultInstance()
+    ),
+
+    // 活动兑换商店兑换
+    ActivityShopExchange_2627(
+        2627,
+        ActivityShopExchange.getDefaultInstance(),
+        ActivityShopExchangeRt.getDefaultInstance()
+    ),
+
+    // 活动兑换商店查询
+    ActivityShopQuery_2628(2628, ActivityShopQuery.getDefaultInstance(), ActivityShopQueryRt.getDefaultInstance()),
+
+    // 一键领取月卡
+    AllGetMonthReward_2629(
+        2629,
+        AllGetMonthReward.getDefaultInstance(),
+        AllGetMonthRewardRt.getDefaultInstance()
+    ),
+
+    GetAppreciationInfo_2630(
+        2630,
+        GetAppreciationInfo.getDefaultInstance(),
+        GetAppreciationInfoRt.getDefaultInstance()
+    ),
+
+    // 红包 2631-2635
+    // 领取红包
+    DrawRedPacket_2631(2631, DrawRedPacket.getDefaultInstance(), DrawRedPacketRt.getDefaultInstance()),
+    // 查询红包信息
+    QueryRedPacketById_2632(2632, QueryRedPacketById.getDefaultInstance(), QueryRedPacketByIdRt.getDefaultInstance()),
+
+    // 红包红点刷新
+    RedPacketRedPointRefresh_2633(
+        2633,
+        RedPacketRedPointRefresh.getDefaultInstance(),
+        RedPacketRedPointRefreshRt.getDefaultInstance()
+    ),
+
+    // 查询红包列表
+    GetRedPacketsInfo_2634(2634, GetRedPacketsInfo.getDefaultInstance(), GetRedPacketsInfoRt.getDefaultInstance()),
+
+    // 宠物 2640-2650
+    // 获取宠物信息
+    PetInfoQuery_2640(
+        2640,
+        PetInfoQuery.getDefaultInstance(),
+        PetInfoQueryRt.getDefaultInstance()
+    ),
+
+    // 捕捉宠物
+    CatchPet_2641(
+        2641,
+        CatchPet.getDefaultInstance(),
+        CatchPetRt.getDefaultInstance()
+    ),
+
+    // 宠物升级、突破
+    PetLvUp_2642(
+        2642,
+        PetLvUp.getDefaultInstance(),
+        PetLvUpRt.getDefaultInstance()
+    ),
+
+    // 使用宠物技能
+    UsePetSkill_2643(
+        2643,
+        UsePetSkill.getDefaultInstance(),
+        UsePetSkillRt.getDefaultInstance()
+    ),
+
+    // 设置技能可用提示
+    SetPetSkillTip_2644(
+        2644,
+        SetPetSkillTip.getDefaultInstance(),
+        SetPetSkillTipRt.getDefaultInstance()
+    ),
+
+    // 宠物洗练属性
+    PetRefineProperty_2645(
+        2645,
+        PetRefineProperty.getDefaultInstance(),
+        PetRefinePropertyRt.getDefaultInstance()
+    ),
+
+    // 替换宠物洗练属性
+    PetReplaceProperty_2646(
+        2646,
+        PetReplaceProperty.getDefaultInstance(),
+        PetReplacePropertyRt.getDefaultInstance()
+    ),
+    // 获取抓捕数据，包括新增和正在进行中的
+    QueryNewPet_2647(
+        2647,
+        QueryNewPet.getDefaultInstance(),
+        QueryNewPetRt.getDefaultInstance()
+    ),
+    // 寻找宠物,完成也发这一条
+    FindNewPet_2648(
+        2648,
+        FindNewPet.getDefaultInstance(),
+        FindNewPetRt.getDefaultInstance()
+    ),
+    // 抓捕时的答题
+    AnswerPetQuest_2649(
+        2649,
+        AnswerPetQuest.getDefaultInstance(),
+        AnswerPetQuestRt.getDefaultInstance()
+    ),
+    // 宠物改名
+    ChangePetName_2650(
+        2650,
+        ChangePetName.getDefaultInstance(),
+        ChangePetName.getDefaultInstance()
+    ),
+
+
+    //恐龙试炼召唤boss形象
+    SummonAllianceNewBoss_2651(
+        2651,
+        SummonAllianceNewBoss.getDefaultInstance(),
+        SummonAllianceNewBossRt.getDefaultInstance()
+    ),
+    //恐龙试炼申请援助
+    AllianceNewBossAidApply_2652(
+        2652,
+        AllianceNewBossAidApply.getDefaultInstance(),
+        AllianceNewBossAidApplyRt.getDefaultInstance()
+    ),
+    //恐龙试炼取消援助申请
+    AllianceNewBossCancelAidApply_2653(
+        2653,
+        AllianceNewBossCancelAidApply.getDefaultInstance(),
+        AllianceNewBossCancelAidApplyRt.getDefaultInstance()
+    ),
+    //恐龙试炼联盟援助申请界面信息
+    AllianceNewBossAidApplicationInfo_2654(
+        2654,
+        AllianceNewBossAidApplicationInfo.getDefaultInstance(),
+        AllianceNewBossAidApplicationInfoRt.getDefaultInstance()
+    ),
+    //恐龙试炼联盟援助加入集结小推送
+    WidgetAllianceNewBossHelpRemind_2655(
+        2655,
+        WidgetAllianceNewBossHelpRemind.getDefaultInstance(),
+        WidgetAllianceNewBossHelpRemindRt.getDefaultInstance()
+    ),
+
+    // 领取全部犒赏令奖励(犒赏令类型4和7)
+    GetAppreciationAllReward_2656(
+        2656,
+        GetAppreciationAllReward.getDefaultInstance(),
+        GetAppreciationAllRewardRt.getDefaultInstance()
+    ),
+
+    // 领取活动普通阶段奖励
+    GetActivityStepReward_2657(
+        2657,
+        GetActivityStepReward.getDefaultInstance(),
+        GetActivityStepRewardRt.getDefaultInstance()
+    ),
+
+    // 虚假帮助的数据,无参则只获取在线人数
+    SendVirtualHelp_2658(
+        2658,
+        SendVirtualHelp.getDefaultInstance(),
+        SendVirtualHelpRt.getDefaultInstance()
+    ),
+
+    // 接受虚假帮助
+    ReceiveVirtualHelp_2659(
+        2659,
+        ReceiveVirtualHelp.getDefaultInstance(),
+        ReceiveVirtualHelpRt.getDefaultInstance()
+    ),
+
+    // 上线触发一次离线帮助
+    OfflineVirtualHelp_2660(
+        2660,
+        OfflineVirtualHelp.getDefaultInstance(),
+        OfflineVirtualHelpRt.getDefaultInstance()
+    ),
+
+    //获取气球的数据
+    GetShootBalloonData_2661(
+        2661,
+        GetShootBalloonData.getDefaultInstance(),
+        GetShootBalloonDataRt.getDefaultInstance()
+    ),
+
+    //气球领奖
+    ReceiveShootBalloonReward_2662(
+        2662,
+        ReceiveShootBalloonReward.getDefaultInstance(),
+        ReceiveShootBalloonRewardRt.getDefaultInstance()
+    ),
+
+    // 获取气球活动信息
+    GetShootBalloonActivity_2663(
+        2663,
+        GetShootBalloonActivity.getDefaultInstance(),
+        GetShootBalloonActivityRt.getDefaultInstance()
+    ),
+
+
+    // 巧克力梦工厂2664-2669
+    // 查询梦工厂活动信息
+    QueryDreamWorksActivityInfo_2664(
+        2664,
+        QueryDreamWorksActivityInfo.getDefaultInstance(),
+        QueryDreamWorksActivityInfoRt.getDefaultInstance()
+    ),
+
+    // 领取梦工厂每日积分奖励
+    DrawTodayScoreReward_2665(
+        2665,
+        DrawTodayScoreReward.getDefaultInstance(),
+        DrawTodayScoreRewardRt.getDefaultInstance()
+    ),
+
+    // 梦工厂制作
+    DreamWorksCreate_2666(2666, DreamWorksCreate.getDefaultInstance(), DreamWorksCreateRt.getDefaultInstance()),
+
+    // 梦工厂制作奖励记录查询(全部)
+    QueryDreamWorksCreateRewardInfo_2667(
+        2667,
+        QueryDreamWorksCreateRewardInfo.getDefaultInstance(),
+        QueryDreamWorksCreateRewardInfoRt.getDefaultInstance()
+    ),
+
+    // 查询梦工厂活动排行榜
+    QueryDreamWorksRewardRank_2668(
+        2668,
+        QueryDreamWorksRewardRank.getDefaultInstance(),
+        QueryDreamWorksRewardRankRt.getDefaultInstance()
+    ),
+
+    // 查询首充三日活动
+    FirstThreeDayQuery_2669(
+        2669,
+        FirstThreeDayQuery.getDefaultInstance(),
+        FirstThreeDayQueryRt.getDefaultInstance()
+    ),
+
+    // 领取首充三日活动奖励
+    ReceiveFirstThreeDay_2670(
+        2670,
+        ReceiveFirstThreeDay.getDefaultInstance(),
+        ReceiveFirstThreeDayRt.getDefaultInstance()
+    ),
+
+    // 发送集结邀请信息
+    SendMassInfoChat_2671(
+        2671,
+        SendMassInfoChat.getDefaultInstance(),
+        SendMassInfoChatRt.getDefaultInstance()
+    ),
+
+    // 英雄专武升级
+    HeroWeaponLvUp_2672(
+        2672,
+        HeroWeaponLvUp.getDefaultInstance(),
+        HeroWeaponLvUpRt.getDefaultInstance()
+    ),
+
+    //一键领取活跃度任务奖励
+    GetHuoyueduTaskRewardQuickly_2673(
+        2673,
+        GetHuoyueduTaskRewardQuickly.getDefaultInstance(),
+        GetHuoyueduTaskRewardQuicklyRt.getDefaultInstance()
+    ),
+
+    //岛主设置本区服国旗
+    KingSetWorldFlag_2674(
+        2674,
+        KingSetWorldFlag.getDefaultInstance(),
+        KingSetWorldFlagRt.getDefaultInstance()
+    ),
+
+    //获取其他世界的边界快照
+    GetOtherWorldSnapshot_2675(
+        2675,
+        KingSetWorldFlag.getDefaultInstance(),
+        KingSetWorldFlagRt.getDefaultInstance()
+    ),
+
+    //获取神秘实验室信息
+    QueryContinuousRechargeInfo_2676(
+        2676,
+        QueryContinuousRechargeInfo.getDefaultInstance(),
+        QueryContinuousRechargeInfoRt.getDefaultInstance()
+    ),
+
+    //领取神秘实验室大奖
+    GetContinuousRechargeBigReward_2677(
+        2677,
+        GetContinuousRechargeBigReward.getDefaultInstance(),
+        GetContinuousRechargeBigRewardRt.getDefaultInstance()
+    ),
+
+    //更换神秘实验室大奖
+    ChangeContinuousRechargeBigReward_2678(
+        2678,
+        ChangeContinuousRechargeBigReward.getDefaultInstance(),
+        ChangeContinuousRechargeBigRewardRt.getDefaultInstance()
+    ),
+
+    //获取最大区服号
+    GetMaxAreaNo_2679(
+        2679,
+        GetMaxAreaNo.getDefaultInstance(),
+        GetMaxAreaNoRt.getDefaultInstance()
+    ),
+
+    //验证超登权限
+    CheckSuperLoginAuthority_2680(
+        2680,
+        CheckSuperLoginAuthority.getDefaultInstance(),
+        CheckSuperLoginAuthorityRt.getDefaultInstance()
+    ),
+
+    // 记录应用商店评分+反馈
+    SaveAppScore_2681(
+        2681,
+        SaveAppScore.getDefaultInstance(),
+        SaveAppScoreRt.getDefaultInstance()
+    ),
+
+    // 恐龙对战快速战斗
+    EliminateQuickFight_2682(
+        2682,
+        EliminateQuickFight.getDefaultInstance(),
+        EliminateQuickFightRt.getDefaultInstance()
+    ),
+
+    // 跨服王战
+    CrossKingdomLadderQuery_2691(
+        2691,
+        CrossKingdomLadderQuery.getDefaultInstance(),
+        CrossKingdomLadderQueryRt.getDefaultInstance()
+    ),
+    CrossKingdomLadderReceive_2692(
+        2692,
+        CrossKingdomLadderReceive.getDefaultInstance(),
+        CrossKingdomLadderReceiveRt.getDefaultInstance()
+    ),
+    CrossKingdomMatchQuery_2693(
+        2693,
+        CrossKingdomMatchQuery.getDefaultInstance(),
+        CrossKingdomMatchQueryRt.getDefaultInstance()
+    ),
+    CrossKingdomWarfareQuery_2694(
+        2694,
+        CrossKingdomWarfareQuery.getDefaultInstance(),
+        CrossKingdomWarfareQueryRt.getDefaultInstance()
+    ),
+    CrossKingdomWarfareReceive_2695(
+        2695,
+        CrossKingdomWarfareReceive.getDefaultInstance(),
+        CrossKingdomWarfareReceiveRt.getDefaultInstance()
+    ),
+    CrossKingdomResuscitate_2696(
+        2696,
+        CrossKingdomResuscitate.getDefaultInstance(),
+        CrossKingdomResuscitateRt.getDefaultInstance()
+    ),
+    CrossKingdomWarfareResult_2697(
+        2697,
+        CrossKingdomWarfareResult.getDefaultInstance(),
+        CrossKingdomWarfareResultRt.getDefaultInstance()
+    ),
+    GetActivityRestrictedQuest_2698(
+        2698,
+        GetActivityRestrictedQuest.getDefaultInstance(),
+        GetActivityRestrictedQuestRt.getDefaultInstance()
+    ),
+
+    GetActivityScoreRank_2700(
+        2700,
+        GetActivityScoreRank.getDefaultInstance(),
+        GetActivityScoreRankRt.getDefaultInstance()
+    ),
+    GetMineActivityScoreRank_2701(
+        2701,
+        GetMineActivityScoreRank.getDefaultInstance(),
+        GetMineActivityScoreRankRt.getDefaultInstance()
+    ),
+
+    QuerySupplyHappyGift_2702(
+        2702,
+        QuerySupplyHappyGift.getDefaultInstance(),
+        QuerySupplyHappyGiftRt.getDefaultInstance()
+    ),
+    ChangeSupplyHappyGift_2703(
+        2703,
+        ChangeSupplyHappyGift.getDefaultInstance(),
+        ChangeSupplyHappyGiftRt.getDefaultInstance()
+    ),
+
+    BatchAllianceDonateCritical_2704(
+        2704,
+        BatchAllianceDonateCritical.getDefaultInstance(),
+        BatchAllianceDonateCriticalRt.getDefaultInstance()
+    ),
+    BatchAllianceDonate_2705(
+        2705,
+        BatchAllianceDonate.getDefaultInstance(),
+        BatchAllianceDonateRt.getDefaultInstance()
+    ),
+
+    QueryFlipTowerInfo_2706(
+        2706,
+        QueryFlipTowerInfo.getDefaultInstance(),
+        QueryFlipTowerInfoRt.getDefaultInstance()
+    ),
+    PlayFlipTower_2707(
+        2707,
+        PlayFlipTower.getDefaultInstance(),
+        PlayFlipTowerRt.getDefaultInstance()
+    ),
+    FlipTowerNextLayer_2708(
+        2708,
+        FlipTowerNextLayer.getDefaultInstance(),
+        FlipTowerNextLayerRt.getDefaultInstance()
+    ),
+
+    // 宠物派遣2710-2720
+    PetTreasureInfoQuery_2710(
+        2710,
+        PetTreasureInfoQuery.getDefaultInstance(),
+        PetTreasureInfoQueryRt.getDefaultInstance()
+    ),
+    PetTreasureAsk_2711(
+        2711,
+        PetTreasureAsk.getDefaultInstance(),
+        PetTreasureAskRt.getDefaultInstance()
+    ),
+    PetGoTreasure_2712(
+        2712,
+        PetGoTreasure.getDefaultInstance(),
+        PetGoTreasureRt.getDefaultInstance()
+    ),
+    PetTreasureReward_2713(
+        2713,
+        PetTreasureReward.getDefaultInstance(),
+        PetTreasureRewardRt.getDefaultInstance()
+    ),
+    PetTreasureHelpInfo_2714(
+        2714,
+        PetTreasureHelpInfo.getDefaultInstance(),
+        PetTreasureHelpInfoRt.getDefaultInstance()
+    ),
+    PetTreasureHelp_2715(
+        2715,
+        PetTreasureHelp.getDefaultInstance(),
+        PetTreasureHelp.getDefaultInstance()
+    ),
+    GetPetTreasureAsk_2716(
+        2716,
+        GetPetTreasureAsk.getDefaultInstance(),
+        GetPetTreasureAskRt.getDefaultInstance()
+    ),
+    SetPetShow_2717(
+        2717,
+        SetPetShow.getDefaultInstance(),
+        SetPetShowRt.getDefaultInstance()
+    ),
+    QueryPetTreasureAskUuid_2718(
+        2718,
+        QueryPetTreasureAskUuid.getDefaultInstance(),
+        QueryPetTreasureAskUuidRt.getDefaultInstance()
+    ),
+    SharePetAllianceTreasure_2719(
+        2719,
+        SharePetAllianceTreasure.getDefaultInstance(),
+        SharePetAllianceTreasureRt.getDefaultInstance()
+    ),
+    QueryPetAllianceTreasure_2720(
+        2720,
+        QueryPetAllianceTreasure.getDefaultInstance(),
+        QueryPetAllianceTreasureRt.getDefaultInstance()
+    ),
+
+
+
+    QueryRelicArchaeolInfo_2721(
+        2721,
+        QueryRelicArchaeolInfo.getDefaultInstance(),
+        QueryRelicArchaeolInfoRt.getDefaultInstance()
+    ),
+
+    RelicArchaeolRoll_2722(
+        2722,
+        RelicArchaeolRoll.getDefaultInstance(),
+        RelicArchaeolRollRt.getDefaultInstance()
+    ),
+
+    RelicArchaeolReceiveStageReward_2723(
+        2723,
+        RelicArchaeolReceiveStageReward.getDefaultInstance(),
+        RelicArchaeolReceiveStageRewardRt.getDefaultInstance()
+    ),
+
+    //获取大大地图的服务器信息
+    GetBigMapServerInfo_2724(
+        2724,
+        GetBigMapServerInfo.getDefaultInstance(),
+        GetBigMapServerInfoRt.getDefaultInstance()
+    ),
+
+    QueryActivityFishInfo_2725(
+        2725,
+        QueryActivityFishInfo.getDefaultInstance(),
+        QueryActivityFishInfoRt.getDefaultInstance()
+    ),
+    ActivityFishing_2726(
+        2726,
+        ActivityFishing.getDefaultInstance(),
+        ActivityFishingRt.getDefaultInstance()
+    ),
+    ActivityFishDailyReward_2727(
+        2727,
+        ActivityFishDailyReward.getDefaultInstance(),
+        ActivityFishDailyRewardRt.getDefaultInstance()
+    ),
+    QueryActivityFishAllReward_2728(
+        2728,
+        QueryActivityFishAllReward.getDefaultInstance(),
+        QueryActivityFishAllRewardRt.getDefaultInstance()
+    ),
+    UsePropV2_2729(
+        2729,
+        UsePropV2.getDefaultInstance(),
+        UsePropV2Rt.getDefaultInstance()
+    ),
+    ActivityFishStepReward_2730(
+        2730,
+        ActivityFishStepReward.getDefaultInstance(),
+        ActivityFishStepRewardRt.getDefaultInstance()
+    ),
+
+    AllianceIslandreefsOpt_2731(2731, AllianceIslandreefsOpt.getDefaultInstance(), AllianceIslandreefsOptRt.getDefaultInstance()),
+    AllianceIslandreefsMatchQuery_2732(2732, AllianceIslandreefsMatchQuery.getDefaultInstance(), AllianceIslandreefsMatchQueryRt.getDefaultInstance()),
+
+    QueryActivityRelicPlant_2733(
+        2733,
+        QueryActivityRelicPlant.getDefaultInstance(),
+        QueryActivityRelicPlantRt.getDefaultInstance()
+    ),
+    ReceiveActivityRelicPlant_2734(
+        2734,
+        ReceiveActivityRelicPlant.getDefaultInstance(),
+        ReceiveActivityRelicPlantRt.getDefaultInstance()
+    ),
+    QueryActivitySavingBank_2735(
+        2735,
+        QueryActivitySavingBank.getDefaultInstance(),
+        QueryActivitySavingBankRt.getDefaultInstance()
+    ),
+    ReceiveActivitySavingBank_2736(
+        2736,
+        ReceiveActivitySavingBank.getDefaultInstance(),
+        ReceiveActivitySavingBankRt.getDefaultInstance()
+    ),
+
+    QueryThumbsUpRecords_2737(
+        2737,
+        QueryThumbsUpRecords.getDefaultInstance(),
+        QueryThumbsUpRecordsRt.getDefaultInstance()
+    ),
+    ThumbsUpOther_2738(
+        2738,
+        ThumbsUpOther.getDefaultInstance(),
+        ThumbsUpOtherRt.getDefaultInstance()
+    ),
+    QueryThumbsUpOtherRecords_2739(
+        2739,
+        QueryThumbsUpOtherRecords.getDefaultInstance(),
+        QueryThumbsUpOtherRecordsRt.getDefaultInstance()
+    ),
+    QueryLordSkin_2740(
+        2740,
+        QueryLordSkin.getDefaultInstance(),
+        QueryLordSkinRt.getDefaultInstance()
+    ),
+    LordSkinLvUp_2741(
+        2741,
+        LordSkinLvUp.getDefaultInstance(),
+        LordSkinLvUpRt.getDefaultInstance()
+    ),
+    UseLordSkin_2742(
+        2742,
+        UseLordSkin.getDefaultInstance(),
+        UseLordSkinRt.getDefaultInstance()
+    ),
+
+    QuerySouvenirCardInfo_2743(
+        2743,
+        QuerySouvenirCardInfo.getDefaultInstance(),
+        QuerySouvenirCardInfoRt.getDefaultInstance()
+    ),
+    OpenSouvenirCard_2744(
+        2744,
+        OpenSouvenirCard.getDefaultInstance(),
+        OpenSouvenirCardRt.getDefaultInstance()
+    ),
+    SouvenirCardExchange_2745(
+        2745,
+        SouvenirCardExchange.getDefaultInstance(),
+        SouvenirCardExchangeRt.getDefaultInstance()
+    ),
+    SouvenirCardLevelUp_2746(
+        2746,
+        SouvenirCardLevelUp.getDefaultInstance(),
+        SouvenirCardLevelUpRt.getDefaultInstance()
+    ),
+    AcceptSouvenirCardStageReward_2747(
+        2747,
+        AcceptSouvenirCardStageReward.getDefaultInstance(),
+        AcceptSouvenirCardStageRewardRt.getDefaultInstance()
+    ),
+    ReceiveWhackMoleReward_2748(
+        2748,
+        ReceiveWhackMoleReward.getDefaultInstance(),
+        ReceiveWhackMoleRewardRt.getDefaultInstance()
+    ),
+    GetWhackMoleData_2749(
+        2749,
+        GetWhackMoleData.getDefaultInstance(),
+        GetWhackMoleDataRt.getDefaultInstance()
+    ),
+    QueryDayGiftPackageActivityInfo_2750(
+        2750,
+        QueryDayGiftPackageActivityInfo.getDefaultInstance(),
+        QueryDayGiftPackageActivityInfoRt.getDefaultInstance(),
+    ),
+    GetDayGiftPackageActivityBigReward_2751(
+        2751,
+        GetDayGiftPackageActivityBigReward.getDefaultInstance(),
+        GetDayGiftPackageActivityBigRewardRt.getDefaultInstance(),
+    ),
+    QueryTradeRoute_2752(
+        2752,
+        QueryTradeRoute.getDefaultInstance(),
+        QueryTradeRouteRt.getDefaultInstance(),
+    ),
+    RefreshRacingQuality_2753(
+        2753,
+        RefreshRacingQuality.getDefaultInstance(),
+        RefreshRacingQualityRt.getDefaultInstance(),
+    ),
+    GoMyRacing_2754(
+        2754,
+        GoMyRacing.getDefaultInstance(),
+        GoMyRacingRt.getDefaultInstance(),
+    ),
+    QueryDetailRacing_2755(
+        2755,
+        QueryDetailRacing.getDefaultInstance(),
+        QueryDetailRacingRt.getDefaultInstance(),
+    ),
+    QueryOtherRacing_2756(
+        2756,
+        QueryOtherRacing.getDefaultInstance(),
+        QueryOtherRacingRt.getDefaultInstance(),
+    ),
+    OpenOtherRacingInfo_2757(
+        2757,
+        OpenOtherRacingInfo.getDefaultInstance(),
+        OpenOtherRacingInfoRt.getDefaultInstance(),
+    ),
+    RobOtherRacing_2758(
+        2758,
+        RobOtherRacing.getDefaultInstance(),
+        RobOtherRacingRt.getDefaultInstance(),
+    ),
+    OpenMyRacingHelpInfo_2759(
+        2759,
+        OpenMyRacingHelpInfo.getDefaultInstance(),
+        OpenMyRacingHelpInfoRt.getDefaultInstance(),
+    ),
+    SendMyRacingHelp_2760(
+        2760,
+        SendMyRacingHelp.getDefaultInstance(),
+        SendMyRacingHelpRt.getDefaultInstance(),
+    ),
+    QueryRacingHelpInfo_2761(
+        2761,
+        QueryRacingHelpInfo.getDefaultInstance(),
+        QueryRacingHelpInfoRt.getDefaultInstance(),
+    ),
+
+    QueryMyRacingRecord_2763(
+        2763,
+        QueryMyRacingRecord.getDefaultInstance(),
+        QueryMyRacingRecordRt.getDefaultInstance(),
+    ),
+    ReceiveRacingReward_2764(
+        2764,
+        ReceiveRacingReward.getDefaultInstance(),
+        ReceiveRacingRewardRt.getDefaultInstance(),
+    ),
+    QueryRobMeLastRecord_2765(
+        2765,
+        QueryRobMeLastRecord.getDefaultInstance(),
+        QueryRobMeLastRecordRt.getDefaultInstance(),
+    ),
+    DelTradeRouteRedPoint_2766(
+        2766,
+        DelTradeRouteRedPoint.getDefaultInstance(),
+        DelTradeRouteRedPointRt.getDefaultInstance(),
+    ),
+    QueryDetailRacingRecord_2767(
+        2767,
+        QueryDetailRacingRecord.getDefaultInstance(),
+        QueryDetailRacingRecordRt.getDefaultInstance(),
+    ),
+    GetFindGhostData_2771(
+        2771,
+        GetFindGhostData.getDefaultInstance(),
+        GetFindGhostDataRt.getDefaultInstance()
+    ),
+    ReceiveFindGhostReward_2772(
+        2772,
+        ReceiveFindGhostReward.getDefaultInstance(),
+        ReceiveFindGhostRewardRt.getDefaultInstance()
+    ),
+    ParkManagementQuery_2773(
+        2773,
+        ParkManagementQuery.getDefaultInstance(),
+        ParkManagementQueryRt.getDefaultInstance()
+    ),
+    ParkManagementOpt_2774(
+        2774,
+        ParkManagementOpt.getDefaultInstance(),
+        ParkManagementOptRt.getDefaultInstance()
+    ),
+    ParkManagementPlotFinish_2775(
+        2775,
+        ParkManagementPlotFinish.getDefaultInstance(),
+        ParkManagementPlotFinishRt.getDefaultInstance()
+    ),
+    BloodArchePurify_2776(
+        2776,
+        BloodArchePurify.getDefaultInstance(),
+        BloodArchePurifyRt.getDefaultInstance()
+    ),
+    QueryHackerMasterInfo_2777(
+        2777,
+        QueryHackerMasterInfo.getDefaultInstance(),
+        QueryHackerMasterInfoRt.getDefaultInstance()
+    ),
+    HackerMasterPlay_2778(
+        2778,
+        HackerMasterPlay.getDefaultInstance(),
+        HackerMasterPlayRt.getDefaultInstance()
+    ),
+    HackerMasterNextLayer_2779(
+        2779,
+        HackerMasterNextLayer.getDefaultInstance(),
+        HackerMasterNextLayerRt.getDefaultInstance()
+    ),
+    HackerMasterSetBigReward_2780(
+        2780,
+        HackerMasterSetBigReward.getDefaultInstance(),
+        HackerMasterSetBigRewardRt.getDefaultInstance()
+    ),
+    HackerMasterReceiveStageReward_2781(
+        2781,
+        HackerMasterReceiveStageReward.getDefaultInstance(),
+        HackerMasterReceiveStageRewardRt.getDefaultInstance()
+    ),
+    BattlefieldMatchQuery_2786(
+        2786,
+        BattlefieldMatchQuery.getDefaultInstance(),
+        BattlefieldMatchQueryRt.getDefaultInstance()
+    ),
+    QueryActivityCookInfo_2787(
+        2787,
+        QueryActivityCookInfo.getDefaultInstance(),
+        QueryActivityCookInfoRt.getDefaultInstance()
+    ),
+    ActivityCookChefLvUp_2788(
+        2788,
+        ActivityCookChefLvUp.getDefaultInstance(),
+        ActivityCookChefLvUpRt.getDefaultInstance()
+    ),
+    ActivityCooking_2789(
+        2789,
+        ActivityCooking.getDefaultInstance(),
+        ActivityCookingRt.getDefaultInstance()
+    ),
+    ActivityCookDishLvUp_2790(
+        2790,
+        ActivityCookDishLvUp.getDefaultInstance(),
+        ActivityCookDishLvUpRt.getDefaultInstance()
+    ),
+    ActivityCookReceiveUtensil_2791(
+        2791,
+        ActivityCookReceiveUtensil.getDefaultInstance(),
+        ActivityCookReceiveUtensilRt.getDefaultInstance()
+    ),
+    QueryActivitySpecialPay_2793(
+        2793,
+        QueryActivitySpecialPay.getDefaultInstance(),
+        QueryActivitySpecialPayRt.getDefaultInstance()
+    ),
+    DinosaurHeroInfoQuery_2794(
+        2794,
+        DinosaurHeroInfoQuery.getDefaultInstance(),
+        DinosaurHeroInfoQueryRt.getDefaultInstance()
+    ),
+    DinosaurHeroLvUp_2795(
+        2795,
+        DinosaurHeroLvUp.getDefaultInstance(),
+        DinosaurHeroLvUpRt.getDefaultInstance()
+    ),
+    DinosaurHeroSkillUp_2796(
+        2796,
+        DinosaurHeroSkillUp.getDefaultInstance(),
+        DinosaurHeroSkillUpRt.getDefaultInstance()
+    ),
+
+    ActivityBlackFridayInfo_2821(
+        2821,
+        ActivityBlackFridayInfo.getDefaultInstance(),
+        ActivityBlackFridayInfoRt.getDefaultInstance()
+    ),
+    ActivityBlackFridaySet_2822(
+        2822,
+        ActivityBlackFridaySet.getDefaultInstance(),
+        ActivityBlackFridaySetRt.getDefaultInstance()
+    ),
+    ActivityBlackFridayPlay_2823(
+        2823,
+        ActivityBlackFridayPlay.getDefaultInstance(),
+        ActivityBlackFridayPlayRt.getDefaultInstance()
+    ),
+    ActivityBlackFridayStepReward_2824(
+        2824,
+        ActivityBlackFridayStepReward.getDefaultInstance(),
+        ActivityBlackFridayStepRewardRt.getDefaultInstance()
+    ),
+    QueryCrossGrandPrizeRecord_2826(
+        2826,
+        QueryCrossGrandPrizeRecord.getDefaultInstance(),
+        QueryCrossGrandPrizeRecordRt.getDefaultInstance()
+    ),
+    SetupMedal_2827(
+        2827,
+        SetupMedal.getDefaultInstance(),
+        SetupMedalRt.getDefaultInstance()
+    ),
+    QueryMedalShowInfo_2828(
+        2828,
+        QueryMedalShowInfo.getDefaultInstance(),
+        QueryMedalShowInfoRt.getDefaultInstance()
+    ),
+
+
     // 客户端推给服务器的消息.消息头从3000开始
     RefreshMoney_3000(3000, null, RefreshMoney.getDefaultInstance()), // 刷新资源
     EnterMaintenance_3001(3001, null, EnterMaintenance.getDefaultInstance()), // 通知客户端，服务器开始维护
+    PaySucessNotify_3002(3002, null, PaySuccessNotify.getDefaultInstance()), // 部分主动发货的支付平台，将支付成功消息返回给客户端
     HeroStateChange_3004(3004, null, HeroStateChange.getDefaultInstance()), // 武将状态发生变化
+    PlayerMedalChangeNotice_3008(3008, null, PlayerMedalChangeNotice.getDefaultInstance()), // 勋章变化推送
     YieldChange_3009(3009, null, YieldChange.getDefaultInstance()), // 产量变化主推
     HeroChange_3010(3010, null, HeroChange.getDefaultInstance()), // 武将升级推送
     SurveyCompleteNotice_3011(3011, null, SurveyCompleteNotice.getDefaultInstance()), // 问卷完成推送
@@ -2807,6 +4396,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
 
     EliminateMonsterOnMapChange_3260(3260, null, EliminateMonsterOnMapChange.getDefaultInstance()),
     RadarMonsterOnMapChange_3261(3261, null, RadarMonsterOnMapChange.getDefaultInstance()),
+    VirtualMapClearChange_3262(3262, null, VirtualMapClearChange.getDefaultInstance()),
     EnergySpecialChange_3270(3270, null, EnergySpecialChange.getDefaultInstance()),
 
     WonderInfoInit_3304(3304, null, WonderInfoInit.getDefaultInstance()),
@@ -2832,8 +4422,11 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     GetSurpriseGiftPackage_3381(3381, null, GetSurpriseGiftPackage.getDefaultInstance()),
     SuccessGetGiftPackage_3382(3382, null, SuccessGetGiftPackage.getDefaultInstance()),
     ClubCardChange_3383(3383, null, ClubCardChange.getDefaultInstance()),
+    ClubCardComboChange_3384(3384, null, ClubCardComboChange.getDefaultInstance()),
     AppreciationsChange_3402(3402, null, AppreciationsChange.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     WorldReboot_3403(3403, null, WorldReboot.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CountryBuffChange_3405(3405, null, CountryBuffChange.getDefaultInstance()),
     InstanceTimeChange_3406(3406, null, InstanceTimeChange.getDefaultInstance()),
     AllianceBagScoreChange_3407(3407, null, AllianceBagScoreChange.getDefaultInstance()),
@@ -2865,11 +4458,13 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     TotalPayRewardChange_3446(3446, null, TotalPayRewardChange.getDefaultInstance()),
     WorldActivityChange_3448(3448, null, WorldActivityChange.getDefaultInstance()),
     WorldActivityLotteryFinish_3449(3449, null, WorldActivityLotteryFinish.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     FarmedResNotice_3450(3450, null, FarmedResNotice.getDefaultInstance()),
     WalkGroupWipeOutNotice_3452(3452, null, WalkGroupWipeOutNotice.getDefaultInstance()),
     InstructionNotice_3453(3453, null, InstructionNotice.getDefaultInstance()),
     ForceExpressionNotice_3455(3455, null, ForceExpressionNotice.getDefaultInstance()),
     LandChangeNotice_3460(3460, null, LandChangeNotice.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     AllianceBuildChangeNotice_3461(3461, null, AllianceBuildChangeNotice.getDefaultInstance()),
     AllianceMarkChangeNotice_3462(3462, null, AlliMarkNotice.getDefaultInstance()),
     AllianceMemberPosChangeChangeNotice_3463(3463, null, AllianceMemberPosChangeChangeNotice.getDefaultInstance()),
@@ -2887,7 +4482,9 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     ArmyActivityWinNotice_3481(3481, null, ArmyActivityWinNotice.getDefaultInstance()),
     WorldWonderChangeNotice_3482(3482, null, WorldWonderChangeNotice.getDefaultInstance()),
     AllianceCmpttTaskChgNotice_3486(3486, null, AllianceCmpttTaskChgNotice.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     PickUpResPointTakeMultiNotice_3487(3487, null, PickUpResPointTakeMultiNotice.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     CleanPlayerChatRecordsNotice_3489(3489, null, CleanPlayerChatRecordsNotice.getDefaultInstance()),
     BanInfoNotice_3490(3490, null, BanInfoNotice.getDefaultInstance()),
     CapitalBattleStateChange_3491(3491, null, CapitalBattleStateChange.getDefaultInstance()),
@@ -2900,6 +4497,7 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     FunctionBanChangeNotice_3500(3500, null, FunctionBanChangeNotice.getDefaultInstance()),
     CheckTextResultNotice_3501(3501, null, CheckTextResultNotice.getDefaultInstance()),
     LordSkinChange_3502(3502, null, LordSkinChange.getDefaultInstance()),
+    @Deprecated("ED_暂时保留 废弃消息，要移除的话，确认前端不再调用，连同proto一起移除")
     TreasureAutoRefTimeChangeNotice_3503(3503, null, TreasureAutoRefTimeChange.getDefaultInstance()),
     TreasureChangeNotice_3504(3504, null, TreasureChange.getDefaultInstance()),
     NewMailNotice_3505(3505, null, NewMailNotice.getDefaultInstance()),
@@ -2916,11 +4514,78 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
     AllianceJourneyChangeNotice_3530(3530, null, AllianceJourneyChangeNotice.getDefaultInstance()),
     PlunderLimitInfoChangeNotice_3533(3533, null, PlunderLimitInfoChangeNotice.getDefaultInstance()),
     ClientUpdateNotice_3534(3534, null, ClientUpdateNotice.getDefaultInstance()),
+    PictureUrlChangeNotice_3535(3535, null, PictureUrlChangeNotice.getDefaultInstance()),
+
+    BattleFieldAllianceScoreInfoChange_3537(3537, null, BattleFieldAllianceScoreInfoChange.getDefaultInstance()),
+    BattleFieldBuildingInfoChange_3538(3538, null, BattleFieldBuildingInfoChange.getDefaultInstance()),
+    BattleFieldBackWorldNotice_3540(3540, null, BattleFieldBackWorldNotice.getDefaultInstance()),
+    BattleFieldEndNotice_3539(3539, null, BattleFieldEndNotice.getDefaultInstance()),
+    BattleFieldChargeBuffChange_3541(3541, null, BattleFieldChargeBuffChange.getDefaultInstance()),
+    BattleFieldCitySkillUseNotice_3542(3542, null, BattleFieldCitySkillUseNotice.getDefaultInstance()),
+    BattlefieldMemberNumNotice_3544(3544, null, BattlefieldMemberNumNotice.getDefaultInstance()),
+
     AllianceColosseumNoticee_3543(3543, null, AllianceColosseumNotice.getDefaultInstance()),
     AllianceDefCannonAttackNotice_3550(3550, null, AllianceDefCannonAttackNotice.getDefaultInstance()),
     CabbageActivityExpChange_3560(3560, null, CabbageActivityExpChange.getDefaultInstance()),
     DinosaurNotice_3561(3561, null, DinosaurNotice.getDefaultInstance()),
     DinosaurMissionNotice_3562(3562, null, DinosaurMissionNotice.getDefaultInstance()),
+    NeutralCityRegisterNotice_3563(3563, null, NeutralCityRegisterNotice.getDefaultInstance()),
+    QuestionnaireChangeNotice_3564(3564, null, QuestionnaireChangeNotice.getDefaultInstance()),
+    ArmyActivityRobotChangeNotice_3565(3565, null, ArmyActivityRobotChangeNotice.getDefaultInstance()),
+    BuyAllianceGiftSupportBoxBuyTimeChange_3566(3566, null, BuyAllianceGiftSupportBoxBuyTimeChange.getDefaultInstance()),
+    CapitalBlackLandKickNotice_3568(3568, null, CapitalBlackLandKickNotice.getDefaultInstance()),
+    AddDecorationBuildNotice_3569(3569, null, AddDecorationBuildNotice.getDefaultInstance()),
+    NeutralCityNotice_3570(3570, null, NeutralCityNotice.getDefaultInstance()),
+    BattlefieldResourceNotice_3571(3571, null, BattlefieldResourceNotice.getDefaultInstance()),
+    RexComingNotice_3572(3572, null, RexComingNotice.getDefaultInstance()),
+    BattlefieldHeroNotice_3573(3573, null, BattlefieldHeroNotice.getDefaultInstance()),
+    AllianceUnitTaskNotice_3574(3574, null, AllianceUnitTaskNotice.getDefaultInstance()),
+    NewRedPacketMessage_3575(3575, null, NewRedPacketMessage.getDefaultInstance()),
+    MysteryUnlockNotice_3576(3576, null, MysteryUnlockNotice.getDefaultInstance()),
+    AllianceNewBossHelpMessageNotice_3577(3577, null, AllianceNewBossHelpMessageNotice.getDefaultInstance()),
+    WidgetAllianceNewBossHelpRemindNotice_3578(3578, null, WidgetAllianceNewBossHelpRemindNotice.getDefaultInstance()),
+    OperationWarehouseNotice_3580(3580, null, OperationWarehouseNotice.getDefaultInstance()),
+    ArenaDefenseFailNotice_3581(3581, null, ArenaDefenseFailNotice.getDefaultInstance()),
+    OperationAttributeNotice_3582(3582, null, OperationAttributeNotice.getDefaultInstance()),
+    OperationBookUnlockNotice_3583(3583, null, OperationBookUnlockNotice.getDefaultInstance()),
+    OperationMuseumLikeNotice_3584(3584, null, OperationMuseumLikeNotice.getDefaultInstance()),
+    CrossKingdomActivityTimeInfoNotice_3585(3585, null, CrossKingdomActivityTimeInfoNotice.getDefaultInstance()),
+    CrossKingdomWinnerNotice_3586(3586, null, CrossKingdomWinnerNotice.getDefaultInstance()),
+    CrossKingdomLadderLoserNotice_3587(3587, null, CrossKingdomLadderLoserNotice.getDefaultInstance()),
+    RestrictedQuestChangeNotice_3588(3588, null, RestrictedQuestChangeNotice.getDefaultInstance()),
+    FrontendRefreshNotice_3589(3589, null, FrontendRefreshNotice.getDefaultInstance()),
+    CrossKingdomWarfareKickNotice_3589(3590, null, CrossKingdomWarfareKickNotice.getDefaultInstance()),
+    PetTreasureHelpNotice_3591(3591, null, PetTreasureHelpNotice.getDefaultInstance()),
+    MergeServerNotice_3592(3592, null, MergeServerNotice.getDefaultInstance()),
+    HeroComponentChangeNotice_3593(3593, null, HeroComponentChange.getDefaultInstance()),
+    SurpriseActivityNotice_3594(3594, null, SurpriseActivityNotice.getDefaultInstance()),
+    LotteryBossChange_3595(3595, null, LotteryBossChange.getDefaultInstance()),
+    ThumbsUpMeNotice_3596(3596, null, ThumbsUpMeNotice.getDefaultInstance()),
+    BattlefieldCityGuardianChange_3597(3597, null, BattlefieldCityGuardianChangeNotice.getDefaultInstance()),
+    OperationTransportChange_3598(3598, null, OperationTransportChange.getDefaultInstance()),
+    SouvenirCardChange_3599(3599, null, SouvenirCardChange.getDefaultInstance()),
+    BattleFieldInformationChange_3600(3600, null, BattleFieldInformationChange.getDefaultInstance()),
+    BattleFieldHotInfoChange_3601(3601, null, BattleFieldHotInfoChange.getDefaultInstance()),
+
+    DinouaurHuntingChange_3602(3602, null, DinosaurHuntingChange.getDefaultInstance()),
+
+    BattleFieldPlayerScoreInfoChange_3603(3603, null, BattleFieldPlayerScoreInfoChange.getDefaultInstance()),
+    ParkManagementPlotAdd_3604(3604, null, ParkManagementPlotAdd.getDefaultInstance()),
+    ParkManagementValueChange_3605(3605, null, ParkManagementValueChange.getDefaultInstance()),
+    DinosaurBloodArcheGet_3606(3606, null, DinosaurBloodArcheGet.getDefaultInstance()),
+
+    TradeRouteNewRecord_3607(3607, null, TradeRouteNewRecord.getDefaultInstance()),
+    AllianceBuildingChange_3608(3608, null, AllianceBuildingChange.getDefaultInstance()),
+    SyncTradeRouteRacing_3609(3609, null, SyncTradeRouteRacing.getDefaultInstance()),
+
+    DinouaurHuntingCouponChange_3610(3610, null, DinosaurHuntingCouponChange.getDefaultInstance()),
+    AutoMakeSoldierSwitchCloseNotice_3611(3611, null, AutoMakeSoldierSwitchCloseNotice.getDefaultInstance()),
+    AutoDrawSoldierNotice_3612(3612, null, AutoDrawSoldierNotice.getDefaultInstance()),
+    SyncActivityCookUtensils_3613(3613, null, SyncActivityCookUtensils.getDefaultInstance()),
+    FestivalSimpleInfoChangeNotice_3614(3614, null, FestivalSimpleInfoChangeNotice.getDefaultInstance()),
+    HeroCompoundNotice_3615(3615, null, HeroCompoundNotice.getDefaultInstance()),
+    NpcCityNotice_3616(3616, null, NpcCityNotice.getDefaultInstance()),
+    DisappearBuildingChanged_3617(3617, null, DisappearBuildingChanged.getDefaultInstance()),
     ;
 
     companion object : EnumConverter<Int, MsgType>(buildValueMap(MsgType::msgType)) {
@@ -2945,3 +4610,4 @@ enum class MsgType(val msgType: Int, val req: MessageLite?, val resp: MessageLit
 
     }
 }
+

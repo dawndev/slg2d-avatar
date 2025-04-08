@@ -80,6 +80,16 @@ class RobotClientHandler : SimpleChannelInboundHandler<C2SMsg>() {
     }
 
 
+    /**
+     * 获取连接id
+     * <p>
+     *     当前 JVM 实例中唯一标识一个 Channel。
+     *
+     */
+    private fun Channel.toChannelId(): String {
+        return id().asShortText()
+    }
+
     companion object {
         val sessionKey = AttributeKey.valueOf<AvatarPlayingData>("key")   //定义一个属性，相当于map键值对：key是name，value是ActorRef
         val AVATAR_ID = AttributeKey.valueOf<AvatarId>("avatar-id") // 客户端编号的 AttributeKey
